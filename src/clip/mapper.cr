@@ -1,6 +1,14 @@
 module Clip::Mapper
   def initialize(command : Array(String))
     {% begin %}
+      command = command.flat_map do |param|
+        if param.starts_with?("--")
+          param.split('=')
+        else
+          param
+        end
+      end
+
       arguments_errors = Hash(String, Clip::Errors).new
       options_errors = Hash(String, Clip::Errors).new
 

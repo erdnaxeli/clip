@@ -223,6 +223,11 @@ describe Clip::Mapper do
     params.number.should eq(3.14_f32)
   end
 
+  it "reads an option with =" do
+    params = IntOption.new(["--number=10"])
+    params.number.should eq(10)
+  end
+
   it "works with a complex case 1" do
     params = ComplexParams.new(
       [
