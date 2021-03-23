@@ -102,11 +102,6 @@ struct ComplexParams
 end
 
 describe Clip::Mapper do
-  it "returns Option" do
-    params = EmptyOption.new(Array(String).new)
-    params.class.should eq(EmptyOption)
-  end
-
   it "requires an option without default" do
     ex = expect_raises(Clip::ParsingError) do
       FlagOption.new(Array(String).new)
@@ -126,6 +121,20 @@ describe Clip::Mapper do
         "flug" => Clip::Errors::Required,
       }
     )
+  end
+
+  it "reject unknown options" do
+    ex = expect_raises(Clip::ParsingError) do
+      EmptyOption.new(["-f", "--name=test"])
+    end
+
+    ex.options.should eq(
+      {
+        "f" => Clip::Errors::Unknown,
+        "name" => Clip::Errors::Unknown,
+      }
+    )
+    ex.arguments.size.should eq(0)
   end
 
   it "reads a flag" do

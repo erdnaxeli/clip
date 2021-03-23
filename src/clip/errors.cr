@@ -1,5 +1,6 @@
 enum Clip::Errors
   Required
+  Unknown
 end
 
 class Clip::ParsingError < Exception

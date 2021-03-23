@@ -55,6 +55,13 @@ module Clip::Mapper
         {% end %}
       {% end %}
 
+      command.reject! do |option|
+        if option =~ /^-/
+          options_errors[option.lstrip('-')] = Clip::Errors::Unknown
+          true
+        end
+      end
+
       # Then all that is left on `command` should be arguments.
       {% for ivar in @type.instance_vars %}
         {% if ivar.type != Bool && (
