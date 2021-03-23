@@ -11,5 +11,6 @@ class Clip::ParsingError < Exception
     @arguments = Hash(String, Clip::Errors).new,
     @options = Hash(String, Clip::Errors).new
   )
+    super("Error with arguments (#{@arguments}) and / or options (#{@options})")
   end
 end
