@@ -88,6 +88,32 @@ struct FloatOption
   getter number : Float32
 end
 
+struct ShortOptions
+  include Clip::Mapper
+
+  @[Clip::Option("-s")]
+  getter short : Int32
+  @[Clip::Option("-l", "--long")]
+  getter long : Int32
+end
+
+struct ShortFlagOptions
+  include Clip::Mapper
+
+  @[Clip::Option("-a")]
+  getter a_flag = false
+  @[Clip::Option("-b")]
+  getter b_flag = false
+  @[Clip::Option("-c")]
+  getter c_int = 0
+end
+
+struct UnderscoreOption
+  include Clip::Mapper
+
+  getter some_value : String = "default"
+end
+
 struct ComplexParams
   include Clip::Mapper
 
@@ -130,7 +156,7 @@ describe Clip::Mapper do
 
     ex.options.should eq(
       {
-        "f" => Clip::Errors::Unknown,
+        "f"    => Clip::Errors::Unknown,
         "name" => Clip::Errors::Unknown,
       }
     )
@@ -230,6 +256,30 @@ describe Clip::Mapper do
   it "reads a float" do
     params = FloatOption.new(["--number", "3.14"])
     params.number.should eq(3.14_f32)
+  end
+
+  it "reads short options" do
+    params = ShortOptions.new(["-s", "42", "-l", "51"])
+    params.short.should eq(42)
+    params.long.should eq(51)
+  end
+
+  it "reads short and long options" do
+    params = ShortOptions.new(["-s", "42", "--long", "51"])
+    params.short.should eq(42)
+    params.long.should eq(51)
+  end
+
+  it "reads concatenated short options" do
+    params = ShortFlagOptions.new(["-abc", "12"])
+    params.a_flag.should be_true
+    params.b_flag.should be_true
+    params.c_int.should eq(12)
+  end
+
+  it "change underscore to hyphen in options" do
+    params = UnderscoreOption.new(["--some-value", "test"])
+    params.some_value.should eq("test")
   end
 
   it "reads an option with =" do

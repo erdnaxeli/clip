@@ -4,6 +4,8 @@ module Clip::Mapper
       command = command.flat_map do |param|
         if param.starts_with?("--")
           param.split('=')
+        elsif param.starts_with?('-')
+          param[1...].chars.map { |x| "-#{x}" }
         else
           param
         end
@@ -15,9 +17,28 @@ module Clip::Mapper
       # We first handle options.
       {% for ivar in @type.instance_vars %}
         {% if ivar.has_default_value? || ivar.annotation(Option) || ivar.type == Bool %}
+          {% if ivar.annotation(Option) %}
+            {% if ivar.annotation(Option).args.size > 0 %}
+              option_names = {{ivar.annotation(Option).args}}
+              {% ivar.annotation(Option).args.each do |x|
+                raise "option #{x} does not start with an hyphen" if !x.starts_with?('-')
+              end %}
+            {% else %}
+              option_names = {"--{{ivar.id.gsub(/_/, "-")}}"}
+            {% end %}
+          {% else %}
+            option_names = {"--{{ivar.id.gsub(/_/, "-")}}"}
+          {% end %}
+
           {% if ivar.type == Bool %}
-            idx = command.index("--{{ivar.id}}")
-            no_idx = command.index("--no-{{ivar.id}}")
+            idx = nil
+            option_names.each do |option_name|
+              idx = command.index(option_name)
+              break if !idx.nil?
+            end
+
+            no_idx = command.index("--no-{{ivar.id.gsub(/_/, "-")}}")
+
             if !idx.nil?
               value = command.delete_at(idx, 1)[0]
               @{{ivar.id}} = true
@@ -31,7 +52,12 @@ module Clip::Mapper
             {% end %}
             end
           {% elsif ivar.type == String || ivar.type < Number %}
-            idx = command.index("--{{ivar.id}}")
+            idx = nil
+            option_names.each do |option_name|
+              idx = command.index(option_name)
+              break if !idx.nil?
+            end
+
             if !idx.nil?
               value = command.delete_at(idx, 2)[1]
               {% if ivar.type == String %}
@@ -92,7 +118,6 @@ module Clip::Mapper
       if options_errors.size > 0 || arguments_errors.size > 0
         raise Clip::ParsingError.new(arguments_errors, options_errors)
       end
-
     {% end %}
   end
 end
