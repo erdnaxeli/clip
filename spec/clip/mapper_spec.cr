@@ -163,6 +163,15 @@ describe Clip::Mapper do
     ex.arguments.size.should eq(0)
   end
 
+  it "requires an option to have a value" do
+    ex = expect_raises(Clip::ParsingError) do
+      IntOption.new(["--number"])
+    end
+
+    ex.options.should eq({"number" => Clip::Errors::MissingValue})
+    ex.arguments.size.should eq(0)
+  end
+
   it "reads a flag" do
     params = FlagOption.new(["--flag"])
     params.flag.should be_true
