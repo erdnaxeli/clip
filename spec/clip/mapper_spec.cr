@@ -133,7 +133,7 @@ describe Clip::Mapper do
       FlagOption.new(Array(String).new)
     end
 
-    ex.options.should eq({"flag" => Clip::Errors::Required})
+    ex.options.should eq({"--flag" => Clip::Errors::Required})
   end
 
   it "requires all option without default" do
@@ -143,8 +143,8 @@ describe Clip::Mapper do
 
     ex.options.should eq(
       {
-        "flag" => Clip::Errors::Required,
-        "flug" => Clip::Errors::Required,
+        "--flag" => Clip::Errors::Required,
+        "--flug" => Clip::Errors::Required,
       }
     )
   end
@@ -156,8 +156,8 @@ describe Clip::Mapper do
 
     ex.options.should eq(
       {
-        "f"    => Clip::Errors::Unknown,
-        "name" => Clip::Errors::Unknown,
+        "-f"     => Clip::Errors::Unknown,
+        "--name" => Clip::Errors::Unknown,
       }
     )
     ex.arguments.size.should eq(0)
@@ -168,7 +168,7 @@ describe Clip::Mapper do
       IntOption.new(["--number"])
     end
 
-    ex.options.should eq({"number" => Clip::Errors::MissingValue})
+    ex.options.should eq({"--number" => Clip::Errors::MissingValue})
     ex.arguments.size.should eq(0)
   end
 
@@ -267,7 +267,7 @@ describe Clip::Mapper do
       IntOption.new(["--number", "abc"])
     end
 
-    ex.options.should eq({"number" => Clip::Errors::InvalidValue})
+    ex.options.should eq({"--number" => Clip::Errors::InvalidValue})
     ex.arguments.size.should eq(0)
   end
 
@@ -341,7 +341,7 @@ describe Clip::Mapper do
       ComplexParams.new(["--effect", "file"])
     end
 
-    ex.options.should eq({"name" => Clip::Errors::Required})
+    ex.options.should eq({"--name" => Clip::Errors::Required})
     ex.arguments.size.should eq(0)
   end
 
@@ -350,7 +350,7 @@ describe Clip::Mapper do
       ComplexParams.new(["--size", "4"])
     end
 
-    ex.options.should eq({"name" => Clip::Errors::Required})
+    ex.options.should eq({"--name" => Clip::Errors::Required})
     ex.arguments.should eq({"input" => Clip::Errors::Required})
   end
 end

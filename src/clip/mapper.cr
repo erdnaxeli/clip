@@ -47,21 +47,23 @@ module Clip::Mapper
               @{{ivar.id}} = false
               {% if !ivar.has_default_value? %}
             else
-              options_errors[{{ivar.stringify}}] = Clip::Errors::Required
+              options_errors[option_names[0]] = Clip::Errors::Required
               @{{ivar.id}} = true
               {% end %}
             end
           {% elsif ivar.type == String || ivar.type < Number %}
             idx = nil
-            option_names.each do |option_name|
-              idx = command.index(option_name)
+            option_name = ""
+            option_names.each do |name|
+              option_name = name
+              idx = command.index(name)
               break if !idx.nil?
             end
 
             if !idx.nil?
               if !command[idx + 1]? || command[idx + 1].starts_with?('-')
                 command.delete_at(idx)
-                options_errors[{{ivar.stringify}}] = Clip::Errors::MissingValue
+                options_errors[option_name] = Clip::Errors::MissingValue
                 {% if !ivar.has_default_value? %}
                   {% if ivar.type == String %}
                     @{{ivar.id}} = ""
@@ -86,13 +88,13 @@ module Clip::Mapper
                   begin
                     @{{ivar.id}} = {{ivar.type.id}}.new(value)
                   rescue ArgumentError
-                    options_errors[{{ivar.stringify}}] = Clip::Errors::InvalidValue
+                    options_errors[option_name] = Clip::Errors::InvalidValue
                   end
                 {% end %}
               end
               {% if !ivar.has_default_value? %}
                 else
-                  options_errors[{{ivar.stringify}}] = Clip::Errors::Required
+                  options_errors[option_names[0]] = Clip::Errors::Required
                   {% if ivar.type == String %}
                     @{{ivar.id}} = ""
                   {% else %}
@@ -108,7 +110,7 @@ module Clip::Mapper
 
       command.reject! do |option|
         if option =~ /^-/
-          options_errors[option.lstrip('-')] = Clip::Errors::Unknown
+          options_errors[option] = Clip::Errors::Unknown
           true
         end
       end
