@@ -1,4 +1,5 @@
 enum Clip::Errors
+  InvalidValue
   MissingValue
   Required
   Unknown

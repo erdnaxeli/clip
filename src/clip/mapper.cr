@@ -74,7 +74,20 @@ module Clip::Mapper
                 {% if ivar.type == String %}
                   @{{ivar.id}} = value
                 {% else %}
-                  @{{ivar.id}} = {{ivar.type.id}}.new(value)
+                  {% if !ivar.has_default_value? %}
+                    # We need to initialize the variable first, see
+                    # https://github.com/crystal-lang/crystal/issues/5931
+                    {% if ivar.type == String %}
+                      @{{ivar.id}} = ""
+                    {% else %}
+                      @{{ivar.id}} = 0
+                    {% end %}
+                  {% end %}
+                  begin
+                    @{{ivar.id}} = {{ivar.type.id}}.new(value)
+                  rescue ArgumentError
+                    options_errors[{{ivar.stringify}}] = Clip::Errors::InvalidValue
+                  end
                 {% end %}
               end
               {% if !ivar.has_default_value? %}

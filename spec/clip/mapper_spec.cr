@@ -262,6 +262,15 @@ describe Clip::Mapper do
     params.number.should eq(51)
   end
 
+  it "raises an error when an int option is given an invalid value" do
+    ex = expect_raises(Clip::ParsingError) do
+      IntOption.new(["--number", "abc"])
+    end
+
+    ex.options.should eq({"number" => Clip::Errors::InvalidValue})
+    ex.arguments.size.should eq(0)
+  end
+
   it "reads a float" do
     params = FloatOption.new(["--number", "3.14"])
     params.number.should eq(3.14_f32)
