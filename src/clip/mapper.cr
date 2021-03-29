@@ -1,4 +1,8 @@
 module Clip::Mapper
+  macro included
+    extend Clip::Help
+  end
+
   def initialize(command : Array(String))
     {% begin %}
       command = command.flat_map do |param|
@@ -16,7 +20,9 @@ module Clip::Mapper
 
       # We first handle options.
       {% for ivar in @type.instance_vars %}
-        {% if ivar.has_default_value? || ivar.annotation(Option) || ivar.type == Bool %}
+        {% if !ivar.annotation(Argument) && (
+                ivar.has_default_value? || ivar.annotation(Option) || ivar.type == Bool
+              ) %}
           {% if ivar.annotation(Option) %}
             {% if ivar.annotation(Option).args.size > 0 %}
               option_names = {{ivar.annotation(Option).args}}
@@ -51,7 +57,7 @@ module Clip::Mapper
               @{{ivar.id}} = true
               {% end %}
             end
-          {% elsif ivar.type == String || ivar.type < Number %}
+          {% elsif ivar.type == String || ivar.type < Int || ivar.type < Float %}
             idx = nil
             option_name = ""
             option_names.each do |name|
@@ -103,7 +109,7 @@ module Clip::Mapper
               {% end %}
             end
           {% else %}
-            {% raise "Unhandled type #{ivar.type.stringify}." %}
+            {% raise "Unsupported type #{ivar.type.stringify}." %}
           {% end %}
         {% end %}
       {% end %}
@@ -117,7 +123,7 @@ module Clip::Mapper
 
       # Then all that is left on `command` should be arguments.
       {% for ivar in @type.instance_vars %}
-        {% if ivar.type != Bool && (
+        {% if ivar.type != Bool && !ivar.annotation(Option) && (
                 (!ivar.has_default_value? && !ivar.annotation(Option)) ||
                   ivar.annotation(Argument)
               ) %}

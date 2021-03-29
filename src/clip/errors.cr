@@ -46,7 +46,7 @@ class Clip::ParsingError < Exception
           raise "BUG: unreachable"
         end
 
-        str << argument.capitalize << "\n"
+        str << argument.upcase << "\n"
       end
     end
     super(msg)
