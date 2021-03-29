@@ -7,10 +7,16 @@ end
 struct FlagOption
   include Clip::Mapper
 
+  getter flag : Bool? = nil
+end
+
+struct RequiredFlagOption
+  include Clip::Mapper
+
   getter flag : Bool
 end
 
-struct FlagOptions
+struct RequiredFlagOptions
   include Clip::Mapper
 
   getter flag : Bool
@@ -32,6 +38,13 @@ end
 struct StringArgument
   include Clip::Mapper
 
+  @[Clip::Argument]
+  getter str : String? = nil
+end
+
+struct RequiredStringArgument
+  include Clip::Mapper
+
   getter str : String
 end
 
@@ -43,6 +56,12 @@ struct StringDefaultArgument
 end
 
 struct StringOption
+  include Clip::Mapper
+
+  getter str : String? = nil
+end
+
+struct RequiredStringOption
   include Clip::Mapper
 
   @[Clip::Option]
@@ -58,6 +77,13 @@ end
 struct IntArgument
   include Clip::Mapper
 
+  @[Clip::Argument]
+  getter number : Int32? = nil
+end
+
+struct RequiredIntArgument
+  include Clip::Mapper
+
   getter number : Int32
 end
 
@@ -71,6 +97,12 @@ end
 struct IntOption
   include Clip::Mapper
 
+  getter number : Int32? = nil
+end
+
+struct RequiredIntOption
+  include Clip::Mapper
+
   @[Clip::Option]
   getter number : Int32
 end
@@ -81,7 +113,7 @@ struct IntDefaultOption
   getter number = 42
 end
 
-struct FloatOption
+struct RequiredFloatOption
   include Clip::Mapper
 
   @[Clip::Option]
@@ -130,7 +162,7 @@ end
 describe Clip::Mapper do
   it "requires an option without default" do
     ex = expect_raises(Clip::ParsingError) do
-      FlagOption.new(Array(String).new)
+      RequiredFlagOption.new(Array(String).new)
     end
 
     ex.options.should eq({"--flag" => Clip::Errors::Required})
@@ -138,7 +170,7 @@ describe Clip::Mapper do
 
   it "requires all option without default" do
     ex = expect_raises(Clip::ParsingError) do
-      FlagOptions.new(Array(String).new)
+      RequiredFlagOptions.new(Array(String).new)
     end
 
     ex.options.should eq(
@@ -147,6 +179,16 @@ describe Clip::Mapper do
         "--flug" => Clip::Errors::Required,
       }
     )
+    ex.arguments.size.should eq(0)
+  end
+
+  it "requires an argument without default" do
+    ex = expect_raises(Clip::ParsingError) do
+      RequiredStringArgument.new(Array(String).new)
+    end
+
+    ex.options.size.should eq(0)
+    ex.arguments.should eq({"str" => Clip::Errors::Required})
   end
 
   it "reject unknown options" do
@@ -165,11 +207,16 @@ describe Clip::Mapper do
 
   it "requires an option to have a value" do
     ex = expect_raises(Clip::ParsingError) do
-      IntOption.new(["--number"])
+      RequiredIntOption.new(["--number"])
     end
 
     ex.options.should eq({"--number" => Clip::Errors::MissingValue})
     ex.arguments.size.should eq(0)
+  end
+
+  it "reads a missing flag" do
+    params = FlagOption.new(Array(String).new)
+    params.flag.should be_nil
   end
 
   it "reads a flag" do
@@ -179,6 +226,16 @@ describe Clip::Mapper do
 
   it "reads a no flag" do
     params = FlagOption.new(["--no-flag"])
+    params.flag.should be_false
+  end
+
+  it "reads a required flag" do
+    params = RequiredFlagOption.new(["--flag"])
+    params.flag.should be_true
+  end
+
+  it "reads a required no flag" do
+    params = RequiredFlagOption.new(["--no-flag"])
     params.flag.should be_false
   end
 
@@ -202,8 +259,18 @@ describe Clip::Mapper do
     params.flag.should be_true
   end
 
+  it "reads a missing string argument" do
+    params = StringArgument.new(Array(String).new)
+    params.str.should be_nil
+  end
+
   it "reads a string argument" do
     params = StringArgument.new(["somestr"])
+    params.str.should eq("somestr")
+  end
+
+  it "reads a required string argument" do
+    params = RequiredStringArgument.new(["somestr"])
     params.str.should eq("somestr")
   end
 
@@ -217,8 +284,18 @@ describe Clip::Mapper do
     params.str.should eq("someothervalue")
   end
 
+  it "reads a missing string option" do
+    params = StringOption.new(Array(String).new)
+    params.str.should be_nil
+  end
+
   it "reads a string option" do
     params = StringOption.new(["--str", "somestr"])
+    params.str.should eq("somestr")
+  end
+
+  it "reads a required string option" do
+    params = RequiredStringOption.new(["--str", "somestr"])
     params.str.should eq("somestr")
   end
 
@@ -232,8 +309,18 @@ describe Clip::Mapper do
     params.str.should eq("someothervalue")
   end
 
+  it "reads a missing int argument" do
+    params = IntArgument.new(Array(String).new)
+    params.number.should be_nil
+  end
+
   it "reads an int argument" do
     params = IntArgument.new(["42"])
+    params.number.should eq(42)
+  end
+
+  it "reads a required int argument" do
+    params = RequiredIntArgument.new(["42"])
     params.number.should eq(42)
   end
 
@@ -247,8 +334,18 @@ describe Clip::Mapper do
     params.number.should eq(51)
   end
 
+  it "reads a missing int option" do
+    params = IntOption.new(Array(String).new)
+    params.number.should be_nil
+  end
+
   it "reads an int option" do
     params = IntOption.new(["--number", "42"])
+    params.number.should eq(42)
+  end
+
+  it "reads a required int option" do
+    params = RequiredIntOption.new(["--number", "42"])
     params.number.should eq(42)
   end
 
@@ -264,15 +361,15 @@ describe Clip::Mapper do
 
   it "raises an error when an int option is given an invalid value" do
     ex = expect_raises(Clip::ParsingError) do
-      IntOption.new(["--number", "abc"])
+      RequiredIntOption.new(["--number", "abc"])
     end
 
     ex.options.should eq({"--number" => Clip::Errors::InvalidValue})
     ex.arguments.size.should eq(0)
   end
 
-  it "reads a float" do
-    params = FloatOption.new(["--number", "3.14"])
+  it "reads a required float" do
+    params = RequiredFloatOption.new(["--number", "3.14"])
     params.number.should eq(3.14_f32)
   end
 
@@ -301,7 +398,7 @@ describe Clip::Mapper do
   end
 
   it "reads an option with =" do
-    params = IntOption.new(["--number=10"])
+    params = RequiredIntOption.new(["--number=10"])
     params.number.should eq(10)
   end
 

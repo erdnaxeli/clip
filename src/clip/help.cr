@@ -6,12 +6,10 @@ module Clip::Help
 
       {%
         @type.instance_vars.map do |ivar|
-          if (
-               ![Bool, Bool?, String, String?].includes?(ivar.type) &&
-               !(ivar.type < Int) && !(ivar.type < Float) &&
-               !ivar.type.union_types.all? { |x| x == Nil || x < Int } &&
-               !ivar.type.union_types.all? { |x| x == Nil || x < Float }
-             )
+          if ![Bool, Bool?, String, String?].includes?(ivar.type) &&
+             !(ivar.type < Int) && !(ivar.type < Float) &&
+             !ivar.type.union_types.all? { |x| x == Nil || x < Int } &&
+             !ivar.type.union_types.all? { |x| x == Nil || x < Float }
             raise "Unsupported type #{ivar.type.stringify}."
           end
 
@@ -19,10 +17,8 @@ module Clip::Help
                ivar.has_default_value? || ivar.annotation(Option) || ivar.type == Bool
              )
             options << ivar
-          elsif ivar.type != Bool && !ivar.annotation(Option) && (
-                  (!ivar.has_default_value? && !ivar.annotation(Option)) ||
-                  ivar.annotation(Argument)
-                )
+          elsif ivar.type != Bool && ivar.type != Bool? && !ivar.annotation(Option) &&
+                (!ivar.has_default_value? || ivar.annotation(Argument))
             arguments << ivar
           end
         end
