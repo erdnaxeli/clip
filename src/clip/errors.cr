@@ -5,6 +5,9 @@ enum Clip::Errors
   Unknown
 end
 
+class Clip::MissingCommand < Exception
+end
+
 class Clip::ParsingError < Exception
   getter arguments : Hash(String, Clip::Errors)
   getter options : Hash(String, Clip::Errors)
@@ -51,4 +54,7 @@ class Clip::ParsingError < Exception
     end
     super(msg)
   end
+end
+
+class Clip::UnknownCommand < Exception
 end

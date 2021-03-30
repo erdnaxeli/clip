@@ -172,14 +172,14 @@ describe "Clip::Help" do
   describe ".help" do
     it "default to PROGRAM_NAME" do
       EmptyHelp.help.should eq(
-"Usage: #{PROGRAM_NAME}
+        "Usage: #{PROGRAM_NAME}
 "
       )
     end
 
     it "show nothing for a empty command" do
       EmptyHelp.help("empty").should eq(
-"Usage: empty
+        "Usage: empty
 "
       )
     end
