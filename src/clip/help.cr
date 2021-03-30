@@ -303,7 +303,7 @@ module Clip::Help
       {% if help != "" %}
         "Usage: #{name} #{ {{help}}  }"
       {% else %}
-        "Usage: #{name}"
+        "Usage: #{name}\n"
       {% end %}
     {% end %}
   end
