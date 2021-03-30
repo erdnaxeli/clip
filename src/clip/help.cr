@@ -53,7 +53,14 @@ module Clip::Help
         {% end %}
       {% end %}
 
+      {% first = true %}
       {% for argument in arguments %}
+        {% if first %}
+          {% first = false %}
+        {% else %}
+          {% help += " " %}
+        {% end %}
+
         {% if argument.has_default_value? %}
           {% help += "[" + argument.stringify.upcase + "]" %}
         {% else %}
@@ -81,35 +88,33 @@ module Clip::Help
         {% for ivar in arguments %}
           {% current_argument = "  " + ivar.stringify.upcase %}
 
-          {% doc = "" %}
+          {% suffix = "" %}
+          {% if ivar.has_default_value? %}
+            {% if ivar.default_value != nil %}
+              {% suffix = "[default: #{ivar.default_value.id}]" %}
+            {% end %}
+          {% else %}
+            {% suffix = "[required]" %}
+          {% end %}
+
+          {% lines = [] of _ %}
           {% if ivar.annotation(Doc) %}
             {% if ivar.annotation(Doc).args.size != 1 %}
               {% raise "The annotation Clip::Doc expects exactly one argument." %}
             {% end %}
 
             {% doc = ivar.annotation(Doc).args[0] %}
-          {% end %}
 
-          {% if ivar.has_default_value? %}
-            {% if ivar.default_value != nil %}
-              {% doc += "  " if doc != "" %}
-              {% doc += "[default: #{ivar.default_value.id}]" %}
-            {% end %}
-          {% else %}
-            {% doc += "  " if doc != "" %}
-            {% doc += "[required]" %}
-          {% end %}
-
-          {% if doc != "" %}
-            {% lines = [] of _ %}
             {% if shift + doc.size > 80 %}
               {% line = [] of _ %}
               {% for word in doc.split(' ') %}
-                {% if shift + line.join(' ').size + word.size <= 80 %}
-                  {% line << word %}
-                {% else %}
-                  {% lines << line %}
-                  {% line = [] of _ %}
+                {% if word != "" %}
+                  {% if shift + line.join(' ').size + 1 + word.size <= 80 %}
+                    {% line << word %}
+                  {% else %}
+                    {% lines << line %}
+                    {% line = [word] %}
+                  {% end %}
                 {% end %}
               {% end %}
 
@@ -117,9 +122,23 @@ module Clip::Help
                 {% lines << line %}
               {% end %}
             {% else %}
-              {% lines << doc.split(' ') %}
+              {% lines << [doc] %}
             {% end %}
 
+            {% if suffix != "" %}
+              {% if shift + lines[-1].join(' ').size + 2 + suffix.size <= 80 %}
+                {% lines[-1] << "" << suffix %}
+              {% else %}
+                {% lines << [suffix] %}
+              {% end %}
+            {% end %}
+          {% else %}
+            {% if suffix != "" %}
+              {% lines << [suffix] %}
+            {% end %}
+          {% end %}
+
+          {% if lines.size > 0 %}
             {% if current_argument.size <= 32 %}
               {% for i in current_argument.size...shift %}
                 {% current_argument += ' ' %}
@@ -148,7 +167,11 @@ module Clip::Help
       {% end %}
 
       {% if options.size > 0 %}
-        {% help += "\n\nOptions:\n" %}
+        {% if arguments.size > 0 %}
+          {% help += "\nOptions:\n" %}
+        {% else %}
+          {% help += "\n\nOptions:\n" %}
+        {% end %}
 
         {% max_option_size = 0 %}
         {% for ivar in options %}
@@ -201,35 +224,31 @@ module Clip::Help
           {% end %}
           {% current_option += type_str %}
 
-          {% doc = "" %}
+          {% suffix = "" %}
+          {% if ivar.has_default_value? %}
+            {% if ivar.default_value != nil %}
+              {% suffix = "[default: #{ivar.default_value.id}]" %}
+            {% end %}
+          {% else %}
+            {% suffix = "[required]" %}
+          {% end %}
+
+          {% lines = [] of _ %}
           {% if ivar.annotation(Doc) %}
             {% if ivar.annotation(Doc).args.size != 1 %}
               {% raise "The annotation Clip::Doc expects exactly one argument." %}
             {% end %}
 
             {% doc = ivar.annotation(Doc).args[0] %}
-          {% end %}
 
-          {% if ivar.has_default_value? %}
-            {% if ivar.default_value != nil %}
-              {% doc += "  " if doc != "" %}
-              {% doc += "[default: #{ivar.default_value.id}]" %}
-            {% end %}
-          {% else %}
-            {% doc += "  " if doc != "" %}
-            {% doc += "[required]" %}
-          {% end %}
-
-          {% if doc != "" %}
-            {% lines = [] of _ %}
             {% if shift + doc.size > 80 %}
               {% line = [] of _ %}
               {% for word in doc.split(' ') %}
-                {% if shift + line.join(' ').size + word.size <= 80 %}
+                {% if shift + line.join(' ').size + 1 + word.size <= 80 %}
                   {% line << word %}
                 {% else %}
                   {% lines << line %}
-                  {% line = [] of _ %}
+                  {% line = [word] %}
                 {% end %}
               {% end %}
 
@@ -237,9 +256,23 @@ module Clip::Help
                 {% lines << line %}
               {% end %}
             {% else %}
-              {% lines << doc.split(' ') %}
+              {% lines << [doc] %}
             {% end %}
 
+            {% if suffix != "" %}
+              {% if shift + lines[-1].join(' ').size + 2 + suffix.size <= 80 %}
+                {% lines[-1] << "" << suffix %}
+              {% else %}
+                {% lines << [suffix] %}
+              {% end %}
+            {% end %}
+          {% else %}
+            {% if suffix != "" %}
+              {% lines << [suffix] %}
+            {% end %}
+          {% end %}
+
+          {% if lines.size > 0 %}
             {% if current_option.size <= 32 %}
               {% for i in current_option.size...shift %}
                 {% current_option += ' ' %}
