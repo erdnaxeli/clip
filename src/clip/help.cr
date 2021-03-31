@@ -46,26 +46,40 @@ module Clip::Help
       {% help = "" %}
 
       {% if options.size > 0 %}
-        {% help += "[OPTIONS]" %}
-
-        {% if arguments.size > 0 %}
-          {% help += " " %}
-        {% end %}
+        {% help += " [OPTIONS]" %}
       {% end %}
 
-      {% first = true %}
       {% for argument in arguments %}
-        {% if first %}
-          {% first = false %}
-        {% else %}
-          {% help += " " %}
-        {% end %}
+        {% help += " " %}
 
         {% if argument.has_default_value? %}
           {% help += "[" + argument.stringify.upcase + "]" %}
         {% else %}
           {% help += argument.stringify.upcase %}
         {% end %}
+      {% end %}
+
+      {% if @type.annotation(Doc) %}
+        {% if @type.annotation(Doc).args.size != 1 %}
+          {% raise "The annotation Clip::Doc expects exactly one argument." %}
+        {% end %}
+
+        {% doc = "" %}
+        {% line = [] of _ %}
+        {% for word in @type.annotation(Doc).args[0].split(' ') %}
+          {% if (line + [word]).join(' ').size <= 80 %}
+            {% line << word %}
+          {% else %}
+            {% doc += line.join(' ') + "\n" %}
+            {% line = [word] %}
+          {% end %}
+        {% end %}
+
+        {% if line.size > 0 %}
+          {% doc += line.join(' ') + "\n" %}
+        {% end %}
+
+        {% help += "\n\n" + doc %}
       {% end %}
 
       {% if arguments.size > 0 %}
@@ -109,7 +123,7 @@ module Clip::Help
               {% line = [] of _ %}
               {% for word in doc.split(' ') %}
                 {% if word != "" %}
-                  {% if shift + line.join(' ').size + 1 + word.size <= 80 %}
+                  {% if shift + (line + [word]).join(' ').size <= 80 %}
                     {% line << word %}
                   {% else %}
                     {% lines << line %}
@@ -244,7 +258,7 @@ module Clip::Help
             {% if shift + doc.size > 80 %}
               {% line = [] of _ %}
               {% for word in doc.split(' ') %}
-                {% if shift + line.join(' ').size + 1 + word.size <= 80 %}
+                {% if shift + (line + [word]).join(' ').size <= 80 %}
                   {% line << word %}
                 {% else %}
                   {% lines << line %}
@@ -301,7 +315,7 @@ module Clip::Help
       {% end %}
 
       {% if help != "" %}
-        "Usage: #{name} {{help.id}}"
+        "Usage: #{name}{{help.id}}"
       {% else %}
         "Usage: #{name}\n"
       {% end %}

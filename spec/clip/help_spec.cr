@@ -4,6 +4,17 @@ struct EmptyHelp
   include Clip::Mapper
 end
 
+@[Clip::Doc("A simple command without any options nor arguments.")]
+struct DocHelp
+  include Clip::Mapper
+end
+
+@[Clip::Doc("A simple command without any options nor arguments. " \
+            "I am not sure what it does though.")]
+struct LongDocHelp
+  include Clip::Mapper
+end
+
 struct FlagOptionHelp
   include Clip::Mapper
 
@@ -154,6 +165,14 @@ struct OptionAndArgumentDoc
   getter number = 4
 end
 
+struct OneWordDoc
+  include Clip::Mapper
+
+  @[Clip::Doc("ThisIsAVeryLongWord,TheGoalIsToMatchExactly80CharsAlmostYesDone! and another line.")]
+  @[Clip::Option]
+  getter value : String
+end
+
 struct VeryLongDonc
   include Clip::Mapper
 
@@ -180,6 +199,25 @@ describe "Clip::Help" do
     it "show nothing for a empty command" do
       EmptyHelp.help("empty").should eq(
         "Usage: empty
+"
+      )
+    end
+
+    it "handles command doc" do
+      DocHelp.help("bin").should eq(
+        "Usage: bin
+
+A simple command without any options nor arguments.
+"
+      )
+    end
+
+    it "handles long command doc" do
+      LongDocHelp.help("bin").should eq(
+        "Usage: bin
+
+A simple command without any options nor arguments. I am not sure what it does
+though.
 "
       )
     end
@@ -397,6 +435,17 @@ Arguments:
 
 Options:
   --number INTEGER  And this is a number.  [default: 4]
+"
+      )
+    end
+
+    it "behaves correctly with a world that goas exactly on 80 chars" do
+      OneWordDoc.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value TEXT  ThisIsAVeryLongWord,TheGoalIsToMatchExactly80CharsAlmostYesDone!
+                and another line.  [required]
 "
       )
     end
