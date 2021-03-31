@@ -70,6 +70,13 @@ struct RequiredFlagOptionHelp
   getter flag : Bool
 end
 
+struct OverwrittenFlagOptionHelp
+  include Clip::Mapper
+
+  @[Clip::Option("--flag")]
+  getter flag = true
+end
+
 struct RequiredStringOptionHelp
   include Clip::Mapper
 
@@ -308,6 +315,16 @@ Options:
 
 Options:
   --flag / --no-flag  [required]
+"
+      )
+    end
+
+    it "does not generate the negative flag when the option name is overwritten" do
+      OverwrittenFlagOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --flag  [default: true]
 "
       )
     end

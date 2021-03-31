@@ -197,16 +197,18 @@ module Clip::Help
 
           {% type_size = 0 %}
           {% if ivar.type == Bool || ivar.type == Bool? %}
-            {% type_size = "/ --no-#{ivar.id.gsub(/_/, "-")}".size %}
+            {% if !ivar.annotation(Option) || ivar.annotation(Option).args.size == 0 %}
+              {% type_size = " / --no-#{ivar.id.gsub(/_/, "-")}".size %}
+            {% end %}
           {% elsif ivar.type == String || ivar.type == String? %}
-            {% type_size = 4 %}
-          {% elsif ivar.type < Int || ivar.type.union_types.all? { |x| x == Nil || x < Int } %}
-            {% type_size = 7 %}
-          {% elsif ivar.type < Float || ivar.type.union_types.all? { |x| x == Nil || x < Float } %}
             {% type_size = 5 %}
+          {% elsif ivar.type < Int || ivar.type.union_types.all? { |x| x == Nil || x < Int } %}
+            {% type_size = 8 %}
+          {% elsif ivar.type < Float || ivar.type.union_types.all? { |x| x == Nil || x < Float } %}
+            {% type_size = 6 %}
           {% end %}
 
-          {% size = names.join(", ").size + 1 + type_size %}
+          {% size = names.join(", ").size + type_size %}
           {% if size > max_option_size %}
             {% max_option_size = size %}
           {% end %}
@@ -228,7 +230,9 @@ module Clip::Help
 
           {% type_str = "" %}
           {% if ivar.type == Bool || ivar.type == Bool? %}
-            {% type_str = " / --no-#{ivar.id.gsub(/_/, "-")}" %}
+            {% if !ivar.annotation(Option) || ivar.annotation(Option).args.size == 0 %}
+              {% type_str = " / --no-#{ivar.id.gsub(/_/, "-")}" %}
+            {% end %}
           {% elsif ivar.type == String || ivar.type == String? %}
             {% type_str = " TEXT" %}
           {% elsif ivar.type < Int || ivar.type.union_types.all? { |x| x == Nil || x < Int } %}

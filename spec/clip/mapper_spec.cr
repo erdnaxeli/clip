@@ -35,6 +35,34 @@ struct FlagDefaultFalseOption
   getter flag = false
 end
 
+struct FlagOverwriteTrueOption
+  include Clip::Mapper
+
+  @[Clip::Option("--flag")]
+  getter flag = true
+end
+
+struct FlagOverwriteFalseOption
+  include Clip::Mapper
+
+  @[Clip::Option("--flag")]
+  getter flag = false
+end
+
+struct FlagOverwriteNilOption
+  include Clip::Mapper
+
+  @[Clip::Option("--flag")]
+  getter flag : Bool? = nil
+end
+
+struct FlagOverwriteNoneOption
+  include Clip::Mapper
+
+  @[Clip::Option("--flag")]
+  getter flag : Bool
+end
+
 struct StringArgument
   include Clip::Mapper
 
@@ -257,6 +285,35 @@ describe Clip::Mapper do
   it "overwrites a flags with a default value with true" do
     params = FlagDefaultFalseOption.new(["--flag"])
     params.flag.should be_true
+  end
+
+  it "reads a flag with overwritten option name and default value true as false" do
+    params = FlagOverwriteTrueOption.new(["--flag"])
+    params.flag.should be_false
+  end
+
+  it "reads a flag with overwritten option name and default value false as true" do
+    params = FlagOverwriteFalseOption.new(["--flag"])
+    params.flag.should be_true
+  end
+
+  it "reads a flag with overwritten option name and default value nil as true" do
+    params = FlagOverwriteNilOption.new(["--flag"])
+    params.flag.should be_true
+  end
+
+  it "reads a flag with overwritten option name and no default value as true" do
+    params = FlagOverwriteNoneOption.new(["--flag"])
+    params.flag.should be_true
+  end
+
+  it "does not recognize the negative flag option when the flag is overwritten" do
+    ex = expect_raises(Clip::ParsingError) do
+      FlagOverwriteTrueOption.new(["--no-flag"])
+    end
+
+    ex.options.should eq({"--no-flag" => Clip::Errors::Unknown})
+    ex.arguments.size.should eq(0)
   end
 
   it "reads a missing string argument" do

@@ -24,56 +24,78 @@ module Clip::Mapper
                 ivar.has_default_value? || ivar.annotation(Option) ||
                   ivar.type == Bool || ivar.type == Bool?
               ) %}
-          {% if ivar.annotation(Option) %}
-            {% if ivar.annotation(Option).args.size > 0 %}
-              option_names = {{ivar.annotation(Option).args}}
-              {% ivar.annotation(Option).args.each do |x|
-                   raise "option #{x} does not start with an hyphen" if !x.starts_with?('-')
-                 end %}
-            {% else %}
-              option_names = {"--{{ivar.id.gsub(/_/, "-")}}"}
-            {% end %}
-          {% else %}
-            option_names = {"--{{ivar.id.gsub(/_/, "-")}}"}
+
+          {% default_name = "--#{ivar.id.gsub(/_/, "-")}" %}
+          {% option_names = [] of _ %}
+          {% if ivar.annotation(Option) && ivar.annotation(Option).args.size > 0 %}
+            {% option_names = ivar.annotation(Option).args %}
+            {% ivar.annotation(Option).args.each do |x|
+                 raise "option #{x} does not start with an hyphen" if !x.starts_with?('-')
+               end %}
           {% end %}
 
           {% if ivar.type == Bool || ivar.type == Bool? %}
             idx = nil
-            option_names.each do |option_name|
-              idx = command.index(option_name)
-              break if !idx.nil?
-            end
 
-            no_idx = command.index("--no-{{ivar.id.gsub(/_/, "-")}}")
+            {% if option_names.size > 0 %}
+              {{option_names}}.each do |option_name|
+                idx = command.index(option_name)
+                break if !idx.nil?
+              end
+
+              {% if ivar.has_default_value? %}
+                {% value = !ivar.default_value %}
+              {% else %}
+                {% value = true %}
+              {% end %}
+            {% else %}
+              idx = command.index({{default_name}})
+              no_idx = command.index("--no-{{ivar.id.gsub(/_/, "-")}}")
+              {% value = true %}
+            {% end %}
 
             if !idx.nil?
-              value = command.delete_at(idx, 1)[0]
-              @{{ivar.id}} = true
-            elsif !no_idx.nil?
-              value = command.delete_at(no_idx, 1)[0]
-              @{{ivar.id}} = false
-              {% if !ivar.has_default_value? %}
-            else
-              options_errors[option_names[0]] = Clip::Errors::Required
-              @{{ivar.id}} = true
-              {% end %}
+              command.delete_at(idx)
+              @{{ivar.id}} = {{value}}
+            {% if option_names.size == 0 %}
+              elsif !no_idx.nil?
+                command.delete_at(no_idx, 1)
+                @{{ivar.id}} = {{!value}}
+            {% end %}
+            {% if !ivar.has_default_value? %}
+              else
+                {% if option_names.size > 0 %}
+                  options_errors[{{option_names[0]}}] = Clip::Errors::Required
+                {% else %}
+                  options_errors[{{default_name}}] = Clip::Errors::Required
+                {% end %}
+                @{{ivar.id}} = true
+            {% end %}
             end
           {% elsif ivar.type == String || ivar.type == String? ||
                      ivar.type < Int || ivar.type < Float ||
                      ivar.type.union_types.all? { |x| x == Nil || x < Int } ||
                      ivar.type.union_types.all? { |x| x == Nil || x < Float } %}
             idx = nil
-            option_name = ""
-            option_names.each do |name|
-              option_name = name
-              idx = command.index(name)
-              break if !idx.nil?
-            end
+            {% if option_names.size > 0 %}
+              option_name = ""
+              {{option_names}}.each do |name|
+                option_name = name
+                idx = command.index(name)
+                break if !idx.nil?
+              end
+            {% else %}
+              idx = command.index({{default_name}})
+            {% end %}
 
             if !idx.nil?
               if !command[idx + 1]? || command[idx + 1].starts_with?('-')
                 command.delete_at(idx)
-                options_errors[option_name] = Clip::Errors::MissingValue
+                {% if option_names.size > 0 %}
+                  options_errors[option_name] = Clip::Errors::MissingValue
+                {% else %}
+                  options_errors[{{default_name}}] = Clip::Errors::MissingValue
+                {% end %}
                 {% if !ivar.has_default_value? %}
                   {% if ivar.type.nilable? %}
                     @{{ivar.id}} = nil
@@ -105,13 +127,22 @@ module Clip::Mapper
                       @{{ivar.id}} = {{ivar.type.id}}.new(value)
                     {% end %}
                   rescue ArgumentError
-                    options_errors[option_name] = Clip::Errors::InvalidValue
+                    {% if option_names.size > 0 %}
+                      options_errors[option_name] = Clip::Errors::InvalidValue
+                    {% else %}
+                      options_errors[{{default_name}}] = Clip::Errors::InvalidValue
+                    {% end %}
                   end
                 {% end %}
               end
               {% if !ivar.has_default_value? %}
                 else
-                  options_errors[option_names[0]] = Clip::Errors::Required
+                  {% if option_names.size > 0 %}
+                    options_errors[option_name] = Clip::Errors::Required
+                  {% else %}
+                    options_errors[{{default_name}}] = Clip::Errors::Required
+                  {% end %}
+
                   {% if ivar.type.nilable? %}
                     @{{ivar.id}} = nil
                   {% elsif ivar.type == String %}
