@@ -17,9 +17,10 @@ class Clip::ParsingError < Exception
     @options = Hash(String, Clip::Errors).new
   )
     msg = String.build do |str|
-      str << "Error:\n"
+      str << "Error:"
+
       @options.each do |option, error|
-        str << "  "
+        str << "\n  "
 
         case error
         in Errors::InvalidValue
@@ -32,11 +33,11 @@ class Clip::ParsingError < Exception
           str << "no such option: "
         end
 
-        str << option << "\n"
+        str << option
       end
 
       @arguments.each do |argument, error|
-        str << "  "
+        str << "\n  "
 
         case error
         in Errors::InvalidValue
@@ -49,7 +50,7 @@ class Clip::ParsingError < Exception
           raise "BUG: unreachable"
         end
 
-        str << argument.upcase << "\n"
+        str << argument.upcase
       end
     end
     super(msg)

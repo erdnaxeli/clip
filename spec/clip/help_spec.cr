@@ -4,15 +4,20 @@ struct EmptyHelp
   include Clip::Mapper
 end
 
-@[Clip::Doc("A simple command without any options nor arguments.")]
+@[Clip::Doc("A simple command with one option.")]
 struct DocHelp
   include Clip::Mapper
+
+  getter value = "somevalue"
 end
 
-@[Clip::Doc("A simple command without any options nor arguments. " \
-            "I am not sure what it does though.")]
+@[Clip::Doc("A simple command with one text argument. " \
+            "I am not sure what it does though. " \
+            "You need to find out.")]
 struct LongDocHelp
   include Clip::Mapper
+
+  getter value : String
 end
 
 struct FlagOptionHelp
@@ -269,19 +274,25 @@ describe "Clip::Help" do
 
     it "handles command doc" do
       DocHelp.help("bin").should eq(
-        "Usage: bin
+        "Usage: bin [OPTIONS]
 
-A simple command without any options nor arguments.
+A simple command with one option.
+
+Options:
+  --value TEXT  [default: somevalue]
 "
       )
     end
 
     it "handles long command doc" do
       LongDocHelp.help("bin").should eq(
-        "Usage: bin
+        "Usage: bin VALUE
 
-A simple command without any options nor arguments. I am not sure what it does
-though.
+A simple command with one text argument. I am not sure what it does though. You
+need to find out.
+
+Arguments:
+  VALUE  [required]
 "
       )
     end

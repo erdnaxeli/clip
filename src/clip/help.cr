@@ -88,10 +88,12 @@ module Clip::Help
         {% end %}
 
         {% help += "\n\n" + doc %}
+      {% else %}
+        {% help += "\n" %}
       {% end %}
 
       {% if arguments.size > 0 %}
-        {% help += "\n\nArguments:\n" %}
+        {% help += "\nArguments:\n" %}
 
         {% max_argument_size = 0 %}
         {% for ivar in arguments %}
@@ -189,11 +191,7 @@ module Clip::Help
       {% end %}
 
       {% if options.size > 0 %}
-        {% if arguments.size > 0 %}
-          {% help += "\nOptions:\n" %}
-        {% else %}
-          {% help += "\n\nOptions:\n" %}
-        {% end %}
+        {% help += "\nOptions:\n" %}
 
         {% max_option_size = 0 %}
         {% for ivar in options %}
