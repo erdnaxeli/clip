@@ -148,6 +148,84 @@ struct RequiredFloatOption
   getter number : Float32
 end
 
+struct MultipleStringArgument
+  include Clip::Mapper
+
+  @[Clip::Argument]
+  getter values : Array(String)? = nil
+end
+
+struct RequiredMultipleStringArgument
+  include Clip::Mapper
+
+  getter values : Array(String)
+end
+
+struct MultipleStringDefaultArgument
+  include Clip::Mapper
+
+  @[Clip::Argument]
+  getter values = ["somevalue"]
+end
+
+struct MultipleIntArgument
+  include Clip::Mapper
+
+  @[Clip::Argument]
+  getter numbers : Array(Int32)? = nil
+end
+
+struct RequiredMultipleIntArgument
+  include Clip::Mapper
+
+  getter numbers : Array(Int32)
+end
+
+struct MultipleIntDefaultArgument
+  include Clip::Mapper
+
+  @[Clip::Argument]
+  getter numbers = [42]
+end
+
+struct MultipleStringOption
+  include Clip::Mapper
+
+  getter values : Array(String)? = nil
+end
+
+struct RequiredMultipleStringOption
+  include Clip::Mapper
+
+  @[Clip::Option]
+  getter values : Array(String)
+end
+
+struct MultipleStringDefaultOption
+  include Clip::Mapper
+
+  getter values = ["somevalue"]
+end
+
+struct MultipleIntOption
+  include Clip::Mapper
+
+  getter numbers : Array(Int32)? = nil
+end
+
+struct RequiredMultipleIntOption
+  include Clip::Mapper
+
+  @[Clip::Option]
+  getter numbers : Array(Int32)
+end
+
+struct MultipleIntDefaultOption
+  include Clip::Mapper
+
+  getter numbers = [42]
+end
+
 struct ShortOptions
   include Clip::Mapper
 
@@ -428,6 +506,142 @@ describe Clip::Mapper do
   it "reads a required float" do
     params = RequiredFloatOption.new(["--number", "3.14"])
     params.number.should eq(3.14_f32)
+  end
+
+  it "reads a missing list string argument" do
+    params = MultipleStringArgument.new(Array(String).new)
+    params.values.should be_nil
+  end
+
+  it "reads a list string argument" do
+    params = MultipleStringArgument.new(["a", "b"])
+    params.values.should eq(["a", "b"])
+  end
+
+  it "required a list string argument" do
+    ex = expect_raises(Clip::ParsingError) do
+      RequiredMultipleStringArgument.new(Array(String).new)
+    end
+
+    ex.options.should eq({"values" => Clip::Errors::Required})
+    ex.arguments.size.should eq(0)
+  end
+
+  it "reads a required list string argument" do
+    params = RequiredMultipleStringArgument.new(["a", "b"])
+    params.values.should eq(["a", "b"])
+  end
+
+  it "reads a list string argument with a default value" do
+    params = MultipleStringDefaultArgument.new(Array(String).new)
+    params.values.should eq(["somevalue"])
+  end
+
+  it "overwrite a list string argument with a default value" do
+    params = MultipleStringDefaultArgument.new(["a", "b"])
+    params.values.should eq(["a", "b"])
+  end
+
+  it "required a list int argument" do
+    ex = expect_raises(Clip::ParsingError) do
+      RequiredMultipleIntArgument.new(Array(String).new)
+    end
+
+    ex.options.should eq({"numbers" => Clip::Errors::Required})
+    ex.arguments.size.should eq(0)
+  end
+
+  it "reads a missing list int argument" do
+    params = MultipleIntArgument.new(Array(String).new)
+    params.numbers.should be_nil
+  end
+
+  it "reads a list int argument" do
+    params = MultipleIntArgument.new(["42", "51"])
+    params.numbers.should eq([42, 51])
+  end
+
+  it "reads a required list int argument" do
+    params = RequiredMultipleIntArgument.new(["42", "51"])
+    params.numbers.should eq([42, 51])
+  end
+
+  it "reads a list int argument with a default value" do
+    params = MultipleIntDefaultArgument.new(Array(String).new)
+    params.numbers.should eq([42])
+  end
+
+  it "overwrite a list int argument with a default value" do
+    params = MultipleIntDefaultArgument.new(["42", "51"])
+    params.numbers.should eq([42, 51])
+  end
+
+  it "reads a missing list string option" do
+    params = MultipleStringOption.new(Array(String).new)
+    params.values.should be_nil
+  end
+
+  it "reads a list string option" do
+    params = MultipleStringOption.new(["--values", "a", "--values", "b"])
+    params.values.should eq(["a", "b"])
+  end
+
+  it "required a list string option" do
+    ex = expect_raises(Clip::ParsingError) do
+      RequiredMultipleStringOption.new(Array(String).new)
+    end
+
+    ex.options.should eq({"--values" => Clip::Errors::Required})
+    ex.arguments.size.should eq(0)
+  end
+
+  it "reads a required list string option" do
+    params = RequiredMultipleStringOption.new(["--values", "a", "--values", "b"])
+    params.values.should eq(["a", "b"])
+  end
+
+  it "reads a list string option with a default value" do
+    params = MultipleStringDefaultOption.new(Array(String).new)
+    params.values.should eq(["somevalue"])
+  end
+
+  it "overwrite a list string option with a default value" do
+    params = MultipleStringDefaultOption.new(["--values", "a", "--values", "b"])
+    params.values.should eq(["a", "b"])
+  end
+
+  it "required a list int option" do
+    ex = expect_raises(Clip::ParsingError) do
+      RequiredMultipleIntOption.new(Array(String).new)
+    end
+
+    ex.options.should eq({"--numbers" => Clip::Errors::Required})
+    ex.arguments.size.should eq(0)
+  end
+
+  it "reads a missing list int option" do
+    params = MultipleIntOption.new(Array(String).new)
+    params.numbers.should be_nil
+  end
+
+  it "reads a list int option" do
+    params = MultipleIntOption.new(["--numbers", "42", "--numbers", "51"])
+    params.numbers.should eq([42, 51])
+  end
+
+  it "reads a required list int option" do
+    params = RequiredMultipleIntOption.new(["--numbers", "42", "--numbers", "51"])
+    params.numbers.should eq([42, 51])
+  end
+
+  it "reads a list int option with a default value" do
+    params = MultipleIntDefaultOption.new(Array(String).new)
+    params.numbers.should eq([42])
+  end
+
+  it "overwrite a list int option with a default value" do
+    params = MultipleIntDefaultOption.new(["--numbers", "42", "--numbers", "51"])
+    params.numbers.should eq([42, 51])
   end
 
   it "reads short options" do

@@ -6,10 +6,18 @@ module Clip::Help
 
       {%
         @type.instance_vars.map do |ivar|
-          if ![Bool, Bool?, String, String?].includes?(ivar.type) &&
+          if ![Bool, Bool?, String, String?, Array(String), Array(String)?].includes?(ivar.type) &&
              !(ivar.type < Int) && !(ivar.type < Float) &&
              !ivar.type.union_types.all? { |x| x == Nil || x < Int } &&
-             !ivar.type.union_types.all? { |x| x == Nil || x < Float }
+             !ivar.type.union_types.all? { |x| x == Nil || x < Float } &&
+             !(
+               ivar.type < Array && (
+                 ivar.type.type_vars.all? { |x| x < Int } ||
+                 ivar.type.type_vars.all? { |x| x < Float }
+               )
+             ) &&
+             !ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } &&
+             !ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) }
             raise "Unsupported type #{ivar.type.stringify}."
           end
 
@@ -200,11 +208,15 @@ module Clip::Help
             {% if !ivar.annotation(Option) || ivar.annotation(Option).args.size == 0 %}
               {% type_size = " / --no-#{ivar.id.gsub(/_/, "-")}".size %}
             {% end %}
-          {% elsif ivar.type == String || ivar.type == String? %}
+          {% elsif [String, String?, Array(String), Array(String)?].includes?(ivar.type) %}
             {% type_size = 5 %}
-          {% elsif ivar.type < Int || ivar.type.union_types.all? { |x| x == Nil || x < Int } %}
+          {% elsif ivar.type < Int || ivar.type.union_types.all? { |x| x == Nil || x < Int } ||
+                     (ivar.type < Array && ivar.type.type_vars.all? { |x| x == Nil || x < Int }) ||
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } %}
             {% type_size = 8 %}
-          {% elsif ivar.type < Float || ivar.type.union_types.all? { |x| x == Nil || x < Float } %}
+          {% elsif ivar.type < Float || ivar.type.union_types.all? { |x| x == Nil || x < Float } ||
+                     (ivar.type < Array && ivar.type.type_vars.all? { |x| x == Nil || x < Float }) ||
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) } %}
             {% type_size = 6 %}
           {% end %}
 
@@ -233,11 +245,15 @@ module Clip::Help
             {% if !ivar.annotation(Option) || ivar.annotation(Option).args.size == 0 %}
               {% type_str = " / --no-#{ivar.id.gsub(/_/, "-")}" %}
             {% end %}
-          {% elsif ivar.type == String || ivar.type == String? %}
+          {% elsif [String, String?, Array(String), Array(String)?].includes?(ivar.type) %}
             {% type_str = " TEXT" %}
-          {% elsif ivar.type < Int || ivar.type.union_types.all? { |x| x == Nil || x < Int } %}
+          {% elsif ivar.type < Int || ivar.type.union_types.all? { |x| x == Nil || x < Int } ||
+                     (ivar.type < Array && ivar.type.type_vars.all? { |x| x == Nil || x < Int }) ||
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } %}
             {% type_str = " INTEGER" %}
-          {% elsif ivar.type < Float || ivar.type.union_types.all? { |x| x == Nil || x < Float } %}
+          {% elsif ivar.type < Float || ivar.type.union_types.all? { |x| x == Nil || x < Float } ||
+                     (ivar.type < Array && ivar.type.type_vars.all? { |x| x == Nil || x < Float }) ||
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) } %}
             {% type_str = " FLOAT" %}
           {% end %}
           {% current_option += type_str %}
@@ -245,7 +261,7 @@ module Clip::Help
           {% suffix = "" %}
           {% if ivar.has_default_value? %}
             {% if ivar.default_value != nil %}
-              {% suffix = "[default: #{ivar.default_value.id}]" %}
+              {% suffix = "[default: #{ivar.default_value.id.gsub(/"/, "")}]" %}
             {% end %}
           {% else %}
             {% suffix = "[required]" %}

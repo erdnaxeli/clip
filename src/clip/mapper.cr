@@ -75,9 +75,25 @@ module Clip::Mapper
           {% elsif ivar.type == String || ivar.type == String? ||
                      ivar.type < Int || ivar.type < Float ||
                      ivar.type.union_types.all? { |x| x == Nil || x < Int } ||
-                     ivar.type.union_types.all? { |x| x == Nil || x < Float } %}
-            idx = nil
+                     ivar.type.union_types.all? { |x| x == Nil || x < Float } ||
+                     ivar.type == Array(String) || ivar.type == Array(String)? ||
+                     (ivar.type < Array && ivar.type.type_vars.all? { |x| x < Int }) ||
+                     (ivar.type < Array && ivar.type.type_vars.all? { |x| x < Float }) ||
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } ||
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) } %}
+            {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
+              {% if ivar.type.nilable? %}
+                {% var_type = ivar.type.union_types.find { |x| x != Nil } %}
+                %value = {{var_type.id}}.new
+              {% else %}
+                %value = {{ivar.type}}.new
+              {% end %}
+
+              loop do
+            {% end %}
+
             {% if option_names.size > 0 %}
+              idx = nil
               option_name = ""
               {{option_names}}.each do |name|
                 option_name = name
@@ -88,7 +104,25 @@ module Clip::Mapper
               idx = command.index({{default_name}})
             {% end %}
 
-            if !idx.nil?
+            if idx.nil?
+              {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
+                break
+              {% elsif !ivar.has_default_value? %}
+                {% if option_names.size > 0 %}
+                  options_errors[option_name] = Clip::Errors::Required
+                {% else %}
+                  options_errors[{{default_name}}] = Clip::Errors::Required
+                {% end %}
+
+                {% if ivar.type.nilable? %}
+                  @{{ivar.id}} = nil
+                {% elsif ivar.type == String %}
+                  @{{ivar.id}} = ""
+                {% else %}
+                  @{{ivar.id}} = 0
+                {% end %}
+              {% end %}
+            else
               if !command[idx + 1]? || command[idx + 1].starts_with?('-')
                 command.delete_at(idx)
                 {% if option_names.size > 0 %}
@@ -96,7 +130,8 @@ module Clip::Mapper
                 {% else %}
                   options_errors[{{default_name}}] = Clip::Errors::MissingValue
                 {% end %}
-                {% if !ivar.has_default_value? %}
+                {% if !(ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array }) &&
+                        !ivar.has_default_value? %}
                   {% if ivar.type.nilable? %}
                     @{{ivar.id}} = nil
                   {% elsif ivar.type == String %}
@@ -109,8 +144,11 @@ module Clip::Mapper
                 value = command.delete_at(idx, 2)[1]
                 {% if ivar.type == String || ivar.type == String? %}
                   @{{ivar.id}} = value
+                {% elsif ivar.type == Array(String) || ivar.type == Array(String)? %}
+                  %value << value
                 {% else %}
-                  {% if !ivar.has_default_value? %}
+                  {% if !(ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array }) &&
+                          !ivar.has_default_value? %}
                     # We need to initialize the variable first, see
                     # https://github.com/crystal-lang/crystal/issues/5931
                     {% if ivar.type == String %}
@@ -120,9 +158,17 @@ module Clip::Mapper
                     {% end %}
                   {% end %}
                   begin
-                    {% if ivar.type.nilable? %}
+                    {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
+                      {% if ivar.type.nilable? %}
+                        {% var_type = ivar.type.union_types.find { |x| x != Nil }.type_vars[0] %}
+                      {% else %}
+                        {% var_type = ivar.type.type_vars[0] %}
+                      {% end %}
+
+                      %value << {{var_type.id}}.new(value)
+                    {% elsif ivar.type.nilable? %}
                       {% var_type = ivar.type.union_types.find { |x| x != Nil } %}
-                      @{{ivar.id}} = {{var_type}}.new(value)
+                      @{{ivar.id}} = {{var_type.id}}.new(value)
                     {% else %}
                       @{{ivar.id}} = {{ivar.type.id}}.new(value)
                     {% end %}
@@ -135,25 +181,28 @@ module Clip::Mapper
                   end
                 {% end %}
               end
-              {% if !ivar.has_default_value? %}
-                else
+            end
+            {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
+              end
+
+              {% if ivar.has_default_value? %}
+                if %value.size > 0
+                  @{{ivar.id}} = %value
+                end
+              {% else %}
+                if %value.size == 0
                   {% if option_names.size > 0 %}
                     options_errors[option_name] = Clip::Errors::Required
                   {% else %}
                     options_errors[{{default_name}}] = Clip::Errors::Required
                   {% end %}
-
-                  {% if ivar.type.nilable? %}
-                    @{{ivar.id}} = nil
-                  {% elsif ivar.type == String %}
-                    @{{ivar.id}} = ""
-                  {% else %}
-                    @{{ivar.id}} = 0
-                  {% end %}
+                end
+                @{{ivar.id}} = %value
               {% end %}
-            end
+
+            {% end %}
           {% else %}
-            {% raise "Unsupported type #{ivar.type.stringify}." %}
+            {% raise "Unsupported type #{ivar.type.stringify}" %}
           {% end %}
         {% end %}
       {% end %}
@@ -173,16 +222,35 @@ module Clip::Mapper
                   ivar.type == String || ivar.type == String? ||
                     ivar.type < Int || ivar.type < Float ||
                     ivar.type.union_types.all? { |x| x == Nil || x < Int } ||
-                    ivar.type.union_types.all? { |x| x == Nil || x < Float }
+                    ivar.type.union_types.all? { |x| x == Nil || x < Float } ||
+                    ivar.type == Array(String) || ivar.type == Array(String)? ||
+                    (ivar.type < Array && ivar.type.type_vars.all? { |x| x < Int }) ||
+                    (ivar.type < Array && ivar.type.type_vars.all? { |x| x < Float }) ||
+                    ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } ||
+                    ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) }
                 ) %}
             {% raise "Unsupported type #{ivar.type.stringify}." %}
+          {% end %}
+
+          {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
+            {% if ivar.type.nilable? %}
+              {% var_type = ivar.type.union_types.find { |x| x != Nil } %}
+              %value = {{var_type.id}}.new
+            {% else %}
+              %value = {{ivar.type}}.new
+            {% end %}
+
+            loop do
           {% end %}
 
           if value = command.shift?
             {% if ivar.type == String || ivar.type == String? %}
               @{{ivar.id}} = value
+            {% elsif ivar.type == Array(String) || ivar.type == Array(String)? %}
+              %value << value
             {% else %}
-              {% if !ivar.has_default_value? %}
+              {% if !(ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array }) &&
+                      !ivar.has_default_value? %}
                 # We need to initialize the variable first, see
                 # https://github.com/crystal-lang/crystal/issues/5931
                 {% if ivar.type == String %}
@@ -192,7 +260,15 @@ module Clip::Mapper
                 {% end %}
               {% end %}
               begin
-                {% if ivar.type.nilable? %}
+                {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
+                  {% if ivar.type.nilable? %}
+                    {% var_type = ivar.type.union_types.find { |x| x != Nil }.type_vars[0] %}
+                  {% else %}
+                    {% var_type = ivar.type.type_vars[0] %}
+                  {% end %}
+
+                  %value << {{var_type.id}}.new(value)
+                {% elsif ivar.type.nilable? %}
                   {% var_type = ivar.type.union_types.find { |x| x != Nil } %}
                   @{{ivar.id}} = {{var_type}}.new(value)
                 {% else %}
@@ -202,16 +278,37 @@ module Clip::Mapper
                 options_errors[{{ivar.stringify}}] = Clip::Errors::InvalidValue
               end
             {% end %}
-            {% if !ivar.has_default_value? %}
+            {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
+              else
+                break
+            {% elsif !ivar.has_default_value? %}
               else
                 arguments_errors[{{ivar.stringify}}] = Clip::Errors::Required
-                {% if ivar.type == String %}
+                {% if ivar.type.nilable? %}
+                  @{{ivar.id}} == nil
+                {% elsif ivar.type == String %}
                   @{{ivar.id}} = ""
                 {% else %}
                   @{{ivar.id}} = 0
                 {% end %}
             {% end %}
           end
+
+          {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
+            end
+
+            {% if ivar.has_default_value? %}
+              if %value.size > 0
+                @{{ivar.id}} = %value
+              end
+            {% else %}
+              if %value.size == 0
+                options_errors[{{ivar.stringify}}] = Clip::Errors::Required
+              end
+              @{{ivar.id}} = %value
+            {% end %}
+
+          {% end %}
         {% end %}
       {% end %}
 

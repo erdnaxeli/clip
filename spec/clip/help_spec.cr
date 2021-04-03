@@ -39,6 +39,24 @@ struct FloatOptionHelp
   getter value : Float32? = nil
 end
 
+struct MultipleStringOptionHelp
+  include Clip::Mapper
+
+  getter value : Array(String)? = nil
+end
+
+struct MultipleIntOptionHelp
+  include Clip::Mapper
+
+  getter value : Array(Int32)? = nil
+end
+
+struct MultipleFloatOptionHelp
+  include Clip::Mapper
+
+  getter value : Array(Float32)? = nil
+end
+
 struct DefaultFlagOptionHelp
   include Clip::Mapper
 
@@ -61,6 +79,24 @@ struct DefaultFloatOptionHelp
   include Clip::Mapper
 
   getter value = 4.2
+end
+
+struct DefaultMultipleStringOptionHelp
+  include Clip::Mapper
+
+  getter value = ["somevalue"]
+end
+
+struct DefaultMultipleIntOptionHelp
+  include Clip::Mapper
+
+  getter value = [42]
+end
+
+struct DefaultMultipleFloatOptionHelp
+  include Clip::Mapper
+
+  getter value = [4.2]
 end
 
 struct RequiredFlagOptionHelp
@@ -96,6 +132,27 @@ struct RequiredFloatOptionHelp
 
   @[Clip::Option]
   getter value : Float32
+end
+
+struct RequiredMultipleStringOptionHelp
+  include Clip::Mapper
+
+  @[Clip::Option]
+  getter value : Array(String)
+end
+
+struct RequiredMultipleIntOptionHelp
+  include Clip::Mapper
+
+  @[Clip::Option]
+  getter value : Array(Int32)
+end
+
+struct RequiredMultipleFloatOptionHelp
+  include Clip::Mapper
+
+  @[Clip::Option]
+  getter value : Array(Float32)
 end
 
 struct ArgumentHelp
@@ -239,7 +296,7 @@ Options:
       )
     end
 
-    it "handles a string" do
+    it "handles a string option" do
       StringOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -249,7 +306,7 @@ Options:
       )
     end
 
-    it "handles a int" do
+    it "handles a int option" do
       IntOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -259,8 +316,38 @@ Options:
       )
     end
 
-    it "handles a float" do
+    it "handles a float option" do
       FloatOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value FLOAT
+"
+      )
+    end
+
+    it "handles a list string option" do
+      MultipleStringOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value TEXT
+"
+      )
+    end
+
+    it "handles a list int option" do
+      MultipleIntOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value INTEGER
+"
+      )
+    end
+
+    it "handles a list float option" do
+      MultipleFloatOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
 Options:
@@ -309,6 +396,36 @@ Options:
       )
     end
 
+    it "handles a list string option with a default option" do
+      DefaultMultipleStringOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value TEXT  [default: [somevalue]]
+"
+      )
+    end
+
+    it "handles a list int option with a default option" do
+      DefaultMultipleIntOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value INTEGER  [default: [42]]
+"
+      )
+    end
+
+    it "handles a list float option with a default option" do
+      DefaultMultipleFloatOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value FLOAT  [default: [4.2]]
+"
+      )
+    end
+
     it "handles a required flag" do
       RequiredFlagOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
@@ -351,6 +468,36 @@ Options:
 
     it "handles a required float option" do
       RequiredFloatOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value FLOAT  [required]
+"
+      )
+    end
+
+    it "handles a required list string option" do
+      RequiredMultipleStringOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value TEXT  [required]
+"
+      )
+    end
+
+    it "handles a required list int option" do
+      RequiredMultipleIntOptionHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS]
+
+Options:
+  --value INTEGER  [required]
+"
+      )
+    end
+
+    it "handles a required list float option" do
+      RequiredMultipleFloatOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
 Options:
