@@ -1,6 +1,13 @@
-# clip
+# Clip
 
-TODO: Write a description here
+Clip (CLI Parser) allows you to deserialize CLI parameters into an object, and
+generates the help for you.
+
+The goal of Clip is to let you in control.
+It does not execute your code.
+It does not print anything.
+It can read from ARGV but also from any array of strings.
+You choose what you want to do.
 
 ## Installation
 
@@ -9,26 +16,71 @@ TODO: Write a description here
    ```yaml
    dependencies:
      clip:
-       github: your-github-user/clip
+       github: erdnaxeli/clip
    ```
 
 2. Run `shards install`
 
 ## Usage
 
+In a file command.cr:
 ```crystal
-require "clip"
+require "./src/clip"
+
+@[Clip::Doc("An example commmand.")]
+struct Command
+  include Clip::Mapper
+
+  @[Clip::Doc("Enable some effect.")]
+  getter effect = false
+
+  @[Clip::Doc("The file to work on.")]
+  getter file : String
+end
+
+begin
+  command = Command.parse
+rescue ex : Clip::ParsingError
+  puts ex
+  exit
+end
+
+if command.is_a?(Command::Help)
+  puts Command.help
+else
+  if command.effect
+    puts "Doing something with an effect on #{command.file}."
+  else
+    puts "Doing something on #{command.file}."
+  end
+end
 ```
 
-TODO: Write usage instructions here
+Then:
+```Shell
+$ crystal build command.cr 
+$ ./command 
+Error:
+  argument is required: FILE
+$ ./command --help
+Usage: ./command [OPTIONS] FILE
 
-## Development
+An example commmand.
 
-TODO: Write development instructions here
+Arguments:
+  FILE  The file to work on.  [required]
+
+Options:
+  --effect / --no-effect  Enable some effect.  [default: false]
+$ ./command myfile
+Doing something on myfile.
+$ ./command --effect myfile
+Doing something with an effect on myfile.
+```
 
 ## Contributing
 
-1. Fork it (<https://github.com/your-github-user/clip/fork>)
+1. Fork it (<https://github.com/erdnaxeli/clip/fork>)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
@@ -36,4 +88,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [Alexandre Morignot](https://github.com/your-github-user) - creator and maintainer
+- [Alexandre Morignot](https://github.com/erdnaxeli) - creator and maintainer
