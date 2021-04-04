@@ -16,8 +16,8 @@ module Clip::Help
                  ivar.type.type_vars.all? { |x| x < Float }
                )
              ) &&
-             !ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } &&
-             !ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) }
+             !ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Int }) } &&
+             !ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Float }) }
             raise "Unsupported type #{ivar.type.stringify}."
           end
 
@@ -210,11 +210,11 @@ module Clip::Help
             {% type_size = 5 %}
           {% elsif ivar.type < Int || ivar.type.union_types.all? { |x| x == Nil || x < Int } ||
                      (ivar.type < Array && ivar.type.type_vars.all? { |x| x == Nil || x < Int }) ||
-                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } %}
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Int }) } %}
             {% type_size = 8 %}
           {% elsif ivar.type < Float || ivar.type.union_types.all? { |x| x == Nil || x < Float } ||
                      (ivar.type < Array && ivar.type.type_vars.all? { |x| x == Nil || x < Float }) ||
-                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) } %}
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Float }) } %}
             {% type_size = 6 %}
           {% end %}
 
@@ -247,11 +247,11 @@ module Clip::Help
             {% type_str = " TEXT" %}
           {% elsif ivar.type < Int || ivar.type.union_types.all? { |x| x == Nil || x < Int } ||
                      (ivar.type < Array && ivar.type.type_vars.all? { |x| x == Nil || x < Int }) ||
-                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } %}
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Int }) } %}
             {% type_str = " INTEGER" %}
           {% elsif ivar.type < Float || ivar.type.union_types.all? { |x| x == Nil || x < Float } ||
                      (ivar.type < Array && ivar.type.type_vars.all? { |x| x == Nil || x < Float }) ||
-                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) } %}
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Float }) } %}
             {% type_str = " FLOAT" %}
           {% end %}
           {% current_option += type_str %}

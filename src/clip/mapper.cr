@@ -84,8 +84,8 @@ module Clip::Mapper
                      ivar.type == Array(String) || ivar.type == Array(String)? ||
                      (ivar.type < Array && ivar.type.type_vars.all? { |x| x < Int }) ||
                      (ivar.type < Array && ivar.type.type_vars.all? { |x| x < Float }) ||
-                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } ||
-                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) } %}
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Int }) } ||
+                     ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Float }) } %}
             {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
               {% if ivar.type.nilable? %}
                 {% var_type = ivar.type.union_types.find { |x| x != Nil } %}
@@ -231,8 +231,8 @@ module Clip::Mapper
                     ivar.type == Array(String) || ivar.type == Array(String)? ||
                     (ivar.type < Array && ivar.type.type_vars.all? { |x| x < Int }) ||
                     (ivar.type < Array && ivar.type.type_vars.all? { |x| x < Float }) ||
-                    ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Int }) } ||
-                    ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |x| x < Float }) }
+                    ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Int }) } ||
+                    ivar.type.union_types.all? { |x| x == Nil || (x < Array && x.type_vars.all? { |y| y < Float }) }
                 ) %}
             {% raise "Unsupported type #{ivar.type.stringify}." %}
           {% end %}
