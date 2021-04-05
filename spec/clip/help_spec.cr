@@ -260,14 +260,20 @@ describe "Clip::Help" do
   describe ".help" do
     it "default to PROGRAM_NAME" do
       EmptyHelp.help.should eq(
-        "Usage: #{PROGRAM_NAME}
+        "Usage: #{PROGRAM_NAME} [OPTIONS]
+
+Options:
+  --help  Show this message and exit.
 "
       )
     end
 
     it "show nothing for a empty command" do
       EmptyHelp.help("empty").should eq(
-        "Usage: empty
+        "Usage: empty [OPTIONS]
+
+Options:
+  --help  Show this message and exit.
 "
       )
     end
@@ -280,19 +286,23 @@ A simple command with one option.
 
 Options:
   --value TEXT  [default: somevalue]
+  --help        Show this message and exit.
 "
       )
     end
 
     it "handles long command doc" do
       LongDocHelp.help("bin").should eq(
-        "Usage: bin VALUE
+        "Usage: bin [OPTIONS] VALUE
 
 A simple command with one text argument. I am not sure what it does though. You
 need to find out.
 
 Arguments:
   VALUE  [required]
+
+Options:
+  --help  Show this message and exit.
 "
       )
     end
@@ -303,6 +313,7 @@ Arguments:
 
 Options:
   --flag / --no-flag
+  --help              Show this message and exit.
 "
       )
     end
@@ -313,6 +324,7 @@ Options:
 
 Options:
   --value TEXT
+  --help        Show this message and exit.
 "
       )
     end
@@ -323,6 +335,7 @@ Options:
 
 Options:
   --value INTEGER
+  --help           Show this message and exit.
 "
       )
     end
@@ -333,6 +346,7 @@ Options:
 
 Options:
   --value FLOAT
+  --help         Show this message and exit.
 "
       )
     end
@@ -343,6 +357,7 @@ Options:
 
 Options:
   --value TEXT
+  --help        Show this message and exit.
 "
       )
     end
@@ -353,6 +368,7 @@ Options:
 
 Options:
   --value INTEGER
+  --help           Show this message and exit.
 "
       )
     end
@@ -363,6 +379,7 @@ Options:
 
 Options:
   --value FLOAT
+  --help         Show this message and exit.
 "
       )
     end
@@ -373,6 +390,7 @@ Options:
 
 Options:
   --flag / --no-flag  [default: true]
+  --help              Show this message and exit.
 "
       )
     end
@@ -383,6 +401,7 @@ Options:
 
 Options:
   --value TEXT  [default: somevalue]
+  --help        Show this message and exit.
 "
       )
     end
@@ -393,6 +412,7 @@ Options:
 
 Options:
   --value INTEGER  [default: 42]
+  --help           Show this message and exit.
 "
       )
     end
@@ -403,6 +423,7 @@ Options:
 
 Options:
   --value FLOAT  [default: 4.2]
+  --help         Show this message and exit.
 "
       )
     end
@@ -413,6 +434,7 @@ Options:
 
 Options:
   --value TEXT  [default: [somevalue]]
+  --help        Show this message and exit.
 "
       )
     end
@@ -423,6 +445,7 @@ Options:
 
 Options:
   --value INTEGER  [default: [42]]
+  --help           Show this message and exit.
 "
       )
     end
@@ -433,6 +456,7 @@ Options:
 
 Options:
   --value FLOAT  [default: [4.2]]
+  --help         Show this message and exit.
 "
       )
     end
@@ -443,6 +467,7 @@ Options:
 
 Options:
   --flag / --no-flag  [required]
+  --help              Show this message and exit.
 "
       )
     end
@@ -453,6 +478,7 @@ Options:
 
 Options:
   --flag  [default: true]
+  --help  Show this message and exit.
 "
       )
     end
@@ -463,6 +489,7 @@ Options:
 
 Options:
   --value TEXT  [required]
+  --help        Show this message and exit.
 "
       )
     end
@@ -473,6 +500,7 @@ Options:
 
 Options:
   --value INTEGER  [required]
+  --help           Show this message and exit.
 "
       )
     end
@@ -483,6 +511,7 @@ Options:
 
 Options:
   --value FLOAT  [required]
+  --help         Show this message and exit.
 "
       )
     end
@@ -493,6 +522,7 @@ Options:
 
 Options:
   --value TEXT  [required]
+  --help        Show this message and exit.
 "
       )
     end
@@ -503,6 +533,7 @@ Options:
 
 Options:
   --value INTEGER  [required]
+  --help           Show this message and exit.
 "
       )
     end
@@ -513,36 +544,46 @@ Options:
 
 Options:
   --value FLOAT  [required]
+  --help         Show this message and exit.
 "
       )
     end
 
     it "handles an argument" do
       ArgumentHelp.help("bin").should eq(
-        "Usage: bin [VALUE]
+        "Usage: bin [OPTIONS] [VALUE]
 
 Arguments:
   VALUE
+
+Options:
+  --help  Show this message and exit.
 "
       )
     end
 
     it "handles an argument with a default value" do
       DefaultArgumentHelp.help("bin").should eq(
-        "Usage: bin [VALUE]
+        "Usage: bin [OPTIONS] [VALUE]
 
 Arguments:
   VALUE  [default: somevalue]
+
+Options:
+  --help  Show this message and exit.
 "
       )
     end
 
     it "handles a required argument" do
       RequiredArgumentHelp.help("bin").should eq(
-        "Usage: bin VALUE
+        "Usage: bin [OPTIONS] VALUE
 
 Arguments:
   VALUE  [required]
+
+Options:
+  --help  Show this message and exit.
 "
       )
     end
@@ -553,6 +594,7 @@ Arguments:
 
 Options:
   --value TEXT  This is a value.  [default: somevalue]
+  --help        Show this message and exit.
 "
       )
     end
@@ -564,39 +606,49 @@ Options:
 Options:
   --value TEXT      This is a value.  [default: somevalue]
   --number INTEGER  And this is a number.  [default: 4]
+  --help            Show this message and exit.
 "
       )
     end
 
     it "handles argument doc" do
       OneArgumentDoc.help("bin").should eq(
-        "Usage: bin VALUE
+        "Usage: bin [OPTIONS] VALUE
 
 Arguments:
   VALUE  This is a value.  [required]
+
+Options:
+  --help  Show this message and exit.
 "
       )
     end
 
     it "align argument doc" do
       TwoArgumentsDoc.help("bin").should eq(
-        "Usage: bin NUMBER VALUE
+        "Usage: bin [OPTIONS] NUMBER VALUE
 
 Arguments:
   NUMBER  And this is a number.  [required]
   VALUE   This is a value.  [required]
+
+Options:
+  --help  Show this message and exit.
 "
       )
     end
 
     it "follow argument index and doc" do
       ArgumentsDocWithIndex.help("bin").should eq(
-        "Usage: bin NUMBER VALUE NAME
+        "Usage: bin [OPTIONS] NUMBER VALUE NAME
 
 Arguments:
   NUMBER  And this is a number.  [required]
   VALUE   This is a value.  [required]
   NAME    [required]
+
+Options:
+  --help  Show this message and exit.
 "
       )
     end
@@ -610,6 +662,7 @@ Arguments:
 
 Options:
   --number INTEGER  And this is a number.  [default: 4]
+  --help            Show this message and exit.
 "
       )
     end
@@ -621,6 +674,7 @@ Options:
 Options:
   --value TEXT  ThisIsAVeryLongWord,TheGoalIsToMatchExactly80CharsAlmostYesDone!
                 and another line.  [required]
+  --help        Show this message and exit.
 "
       )
     end
@@ -639,6 +693,7 @@ Options:
                         very very very very very very long doc for an argument.
                         [default: 4]
   --booze / --no-booze  And this the way we crush the party  [default: true]
+  --help                Show this message and exit.
 "
       )
     end

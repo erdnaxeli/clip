@@ -51,11 +51,7 @@ module Clip::Help
         end
       %}
 
-      {% help = "" %}
-
-      {% if options.size > 0 %}
-        {% help += " [OPTIONS]" %}
-      {% end %}
+      {% help = " [OPTIONS]" %}
 
       {% for argument in arguments %}
         {% help += " " %}
@@ -190,10 +186,10 @@ module Clip::Help
         {% end %}
       {% end %}
 
+      {% help += "\nOptions:\n" %}
       {% if options.size > 0 %}
-        {% help += "\nOptions:\n" %}
 
-        {% max_option_size = 0 %}
+        {% max_option_size = "--help".size %}
         {% for ivar in options %}
           {% if ivar.annotation(Option) && ivar.annotation(Option).args.size > 0 %}
             {% names = ivar.annotation(Option).args %}
@@ -330,7 +326,15 @@ module Clip::Help
           {% help += current_option %}
           {% help += "\n" %}
         {% end %}
+      {% else %}
+        {% shift = 10 %}
       {% end %}
+
+      {% help += "  --help" %}
+      {% for i in 8...shift %}
+        {% help += ' ' %}
+      {% end %}
+      {% help += "Show this message and exit.\n" %}
 
       {% if help != "" %}
         "Usage: #{name}{{help.id}}"
