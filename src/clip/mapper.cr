@@ -2,10 +2,10 @@ module Clip::Mapper
   macro included
     extend Clip::Help
     extend Clip::Parse
-  end
 
-  class Help
-    INSTANCE = new
+    class Help
+      INSTANCE = new
+    end
   end
 
   def initialize(command : Array(String))

@@ -65,6 +65,7 @@ end
 
 class Clip::UnknownCommand < Clip::Error
   getter command : String
+
   def initialize(@command)
     super("Error: no such command #{command}.")
   end

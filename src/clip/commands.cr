@@ -19,7 +19,7 @@ module Clip
             {% end %}
 
             when {{key}}
-              {{value.id}}.new(command[1...])
+              {{value.id}}.parse(command[1...])
           {% end %}
           else
             raise Clip::UnknownCommand.new(command[0])
@@ -29,7 +29,7 @@ module Clip
         def self.help(name = PROGRAM_NAME)
           {% help = "COMMAND [ARGS]...\n\nCommands:\n" %}
 
-          {% max_command_size = 0 %}
+          {% max_command_size = "help".size %}
           {% for key, value in mapping %}
             {% if key.size > max_command_size %}
               {% max_command_size = key.size %}
@@ -100,7 +100,21 @@ module Clip
             {% help += "\n" %}
           {% end %}
 
+          {% help += "  help" %}
+          {% for i in 6...shift %}
+            {% help += ' ' %}
+          {% end %}
+          {% help += "Show this message and exit.\n" %}
+
           "Usage: #{name} {{help.id}}"
+        end
+
+        def self.parse(command : Array(String) = ARGV)
+          if command[0] == "help"
+            {{@type}}::Help::INSTANCE
+          else
+            new command
+          end
         end
       {% end %}
     end
