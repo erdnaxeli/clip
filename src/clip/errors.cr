@@ -5,10 +5,16 @@ enum Clip::Errors
   Unknown
 end
 
-class Clip::MissingCommand < Exception
+class Clip::Error < Exception
 end
 
-class Clip::ParsingError < Exception
+class Clip::MissingCommand < Clip::Error
+  def initialize
+    super("Error: you need to provide a command.")
+  end
+end
+
+class Clip::ParsingError < Clip::Error
   getter arguments : Hash(String, Clip::Errors)
   getter options : Hash(String, Clip::Errors)
 
@@ -57,5 +63,9 @@ class Clip::ParsingError < Exception
   end
 end
 
-class Clip::UnknownCommand < Exception
+class Clip::UnknownCommand < Clip::Error
+  getter command : String
+  def initialize(@command)
+    super("Error: no such command #{command}.")
+  end
 end
