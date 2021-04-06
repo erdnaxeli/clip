@@ -110,7 +110,7 @@ module Clip
         end
 
         def self.parse(command : Array(String) = ARGV)
-          if command[0] == "help"
+          if command.size > 0 && command[0] == "help"
             {{@type}}::Help::INSTANCE
           else
             new command

@@ -41,8 +41,14 @@ Commands:
       )
     end
 
+    it "raises an error when no commandr is provided" do
+      expect_raises(Clip::MissingCommand) do
+        Commands.parse(Array(String).new)
+      end
+    end
+
     it "parses a command" do
-      cmd = Commands.new(["remove", "--cached", "somefile"])
+      cmd = Commands.parse(["remove", "--cached", "somefile"])
 
       cmd.class.should eq(RemoveCommand)
       cmd = cmd.as(RemoveCommand)
