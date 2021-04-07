@@ -12,10 +12,10 @@ abstract struct Commands
 end
 
 @[Clip::Doc("Add a file.")]
-struct AddCommand < Commands
+abstract struct AddCommand < Commands
   include Clip::Mapper
 
-  getter file : String
+  Clip.add_commands({"again" => AgainCommand})
 end
 
 @[Clip::Doc("Remove a file.")]
@@ -24,6 +24,12 @@ struct RemoveCommand < Commands
 
   @[Clip::Doc("Do not actually remove the file from the disk.")]
   getter cached = false
+  getter file : String
+end
+
+struct AgainCommand < AddCommand
+  include Clip::Mapper
+
   getter file : String
 end
 
@@ -59,15 +65,22 @@ Commands:
     it "handles the help command" do
       cmd = Commands.parse(["help"])
 
-      cmd = cmd.as?(Commands::Help)
-      cmd.should be(Commands::Help::INSTANCE)
+      cmd = cmd.as(Commands::Help)
+      cmd.help.should eq(Commands.help)
     end
 
     it "handles commands' help" do
       cmd = Commands.parse(["remove", "--help"])
 
-      cmd = cmd.as?(RemoveCommand::Help)
-      cmd.should be(RemoveCommand::Help::INSTANCE)
+      cmd = cmd.as(RemoveCommand::Help)
+      cmd.help("bin").should eq(RemoveCommand.help("bin remove"))
+    end
+
+    it "handles recursive commands' help" do
+      cmd = Commands.parse(["add", "again", "--help"])
+
+      cmd = cmd.as(AgainCommand::Help)
+      cmd.help("bin").should eq(AgainCommand.help("bin add again"))
     end
   end
 end

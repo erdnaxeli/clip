@@ -1,14 +1,34 @@
 module Clip::Mapper
+  abstract class Help
+    abstract def help
+  end
+
   macro included
     extend Clip::Help
     extend Clip::Parse
 
-    class Help
-      INSTANCE = new
+    class Help < Clip::Mapper::Help
+      @command : String?
+
+      def initialize(path = Array(String).new)
+        if path.size > 0
+          @command = path.join(' ')
+        else
+          @command = nil
+        end
+      end
+
+      def help(name : String = PROGRAM_NAME)
+        if @command
+          {{@type}}.help("#{name} #{@command}")
+        else
+          {{@type}}.help(name)
+        end
+      end
     end
   end
 
-  def initialize(command : Array(String))
+  def initialize(command : Array(String), path = Array(String).new)
     {% begin %}
       command = command.flat_map do |param|
         if param.starts_with?("--")

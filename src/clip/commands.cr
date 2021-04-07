@@ -7,7 +7,7 @@ module Clip
           {% raise "Clip::add_commands's argument must be a hash or a named tuple." %}
         {% end %}
 
-        def self.new(command : Array(String))
+        def self.new(command : Array(String), path = Array(String).new)
           if command.size == 0
             raise Clip::MissingCommand.new
           end
@@ -19,7 +19,7 @@ module Clip
             {% end %}
 
             when {{key}}
-              {{value.id}}.parse(command[1...])
+              {{value.id}}.parse(command[1...], path + [{{key}}])
           {% end %}
           else
             raise Clip::UnknownCommand.new(command[0])
@@ -109,11 +109,11 @@ module Clip
           "Usage: #{name} {{help.id}}"
         end
 
-        def self.parse(command : Array(String) = ARGV)
+        def self.parse(command : Array(String) = ARGV, path = Array(String).new)
           if command.size > 0 && command[0] == "help"
-            {{@type}}::Help::INSTANCE
+            {{@type}}::Help.new(path)
           else
-            new command
+            new command, path
           end
         end
       {% end %}

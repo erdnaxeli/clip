@@ -1,10 +1,10 @@
 module Clip::Parse
-  def parse(command : Array(String) = ARGV)
+  def parse(command : Array(String) = ARGV, path = Array(String).new)
     {% begin %}
       if command.includes?("--help")
-        {{@type}}::Help::INSTANCE
+        {{@type}}::Help.new(path)
       else
-        new command
+        new command, path
       end
     {% end %}
   end

@@ -242,7 +242,7 @@ struct OneWordDoc
   getter value : String
 end
 
-struct VeryLongDonc
+struct VeryLongDoc
   include Clip::Mapper
 
   @[Clip::Doc("This is a very very very very very very very very very very very very very very very long doc for an argument.")]
@@ -254,6 +254,36 @@ struct VeryLongDonc
   getter number = 4
   @[Clip::Doc("And this the way we crush the party")]
   getter booze = true
+end
+
+describe VeryLongDoc do
+  it "inherits from Clip::Mapper::Help" do
+    VeryLongDoc::Help.new.is_a?(Clip::Mapper::Help).should be_true
+  end
+
+  describe ".new" do
+    it "can be created without arguments" do
+      VeryLongDoc::Help.new
+    end
+
+    it "accept a path parameter" do
+      VeryLongDoc::Help.new(["add"])
+    end
+  end
+
+  describe "#help" do
+    it "gives access to the help" do
+      VeryLongDoc::Help.new.help.should eq(VeryLongDoc.help)
+    end
+
+    it "accepts a name parameter" do
+      VeryLongDoc::Help.new.help("bin").should eq(VeryLongDoc.help("bin"))
+    end
+
+    it "appends the path parameter to the name parameter" do
+      VeryLongDoc::Help.new(["add", "again"]).help("bin").should eq(VeryLongDoc.help("bin add again"))
+    end
+  end
 end
 
 describe "Clip::Help" do
@@ -680,7 +710,7 @@ Options:
     end
 
     it "wrap long doc" do
-      VeryLongDonc.help("bin").should eq(
+      VeryLongDoc.help("bin").should eq(
         "Usage: bin [OPTIONS] OTHERVALUE VALUE
 
 Arguments:
