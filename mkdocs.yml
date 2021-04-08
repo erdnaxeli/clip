@@ -6,6 +6,7 @@ theme:
 
 repo_name: erdnaxei/clip
 repo_url: https://github.com/erdnaxeli/clip
+edit_uri: edit/main/docs/
 
 markdown_extensions:
   - pymdownx.highlight
