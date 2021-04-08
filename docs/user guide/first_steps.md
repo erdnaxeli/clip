@@ -29,7 +29,7 @@ module Mycommand
     end
   end
 
-  def self.hello(name : String)
+  def self.hello(name)
     puts "Hello #{name}"
   end
 end

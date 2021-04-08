@@ -84,7 +84,7 @@ Hello Alice
 
 ## An explicit option
 
-We can also explicitly declare our attribut as an option.
+We can also explicitly declare our attribute as an option.
 We use for that the annotation `Clip::Option`.
 
 ```Crystal hl_lines="9"

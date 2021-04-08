@@ -13,10 +13,10 @@ or
   --repeat INTEGER  [required]
 ```
 
-Something you may not want those messages to be shown.
+Sometime you may not want those messages to be shown.
 Maybe you want the option to be optional and have a default value, but you don't want to expose this value to the user.
 
-What you can do is making the attribute's type nillable and set it a default value `nil`:
+What you can do is making the attribute's type nillable and set a default value `nil`:
 
 ```Crystal hl_lines="10 30"
 require "clip"
