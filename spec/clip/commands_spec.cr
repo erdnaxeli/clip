@@ -69,6 +69,13 @@ Commands:
       cmd.help.should eq(Commands.help)
     end
 
+    it "handles the help option" do
+      cmd = Commands.parse(["--help"])
+
+      cmd = cmd.as(Commands::Help)
+      cmd.help.should eq(Commands.help)
+    end
+
     it "handles commands' help" do
       cmd = Commands.parse(["remove", "--help"])
 

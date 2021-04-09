@@ -110,7 +110,7 @@ module Clip
         end
 
         def self.parse(command : Array(String) = ARGV, path = Array(String).new)
-          if command.size > 0 && command[0] == "help"
+          if command.size > 0 && ["help", "--help"].includes?(command[0])
             {{@type}}::Help.new(path)
           else
             new command, path
