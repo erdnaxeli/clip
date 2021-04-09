@@ -72,7 +72,7 @@ Sadly, this method does not always return the attributes as they were ordered in
 Even sadder, multiple calls can return attributes in a different order.
 With our example the parser saw `repeat` and then `name`, but the help saw `name` and then `repeat`.
 
-That's why **Clip** provide a method to ensure the arguments ordering.
+That's why **Clip** provides a way to ensure the arguments ordering.
 It is done with the annotation `Clip::Argument`, by using a named parameter `idx`:
 
 ```Crystal hl_lines="9 11"

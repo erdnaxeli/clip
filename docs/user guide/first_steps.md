@@ -52,7 +52,7 @@ Options:
   --help  Show this message and exit.
 $ ./bin/mycommand Alice
 Hello Alice
-$ ./bin/mycommand 
+$ ./bin/mycommand
 Error:
   argument is required: NAME
 ```
@@ -69,20 +69,20 @@ struct Command
 end
 ```
 
-**Clip** work by including `Clip::Mapper` inside a type, a class or a struct.
-By including this module, a macro is executed and generate a constructor, the method `#parse` we used earlier, and the help.
-It works by analysing the type's attributes to find what option and arguments will be parsed.
+**Clip** works by including `Clip::Mapper` inside a user defined type, a class or a struct.
+When including this module, a macro is executed to generates a constructor, the method `#parse` we used earlier, and the help.
+It does that by analysing the type's attributes to find what option and arguments will need to be parsed.
 We said it _maps_ the type definition to the expected CLI parameters, hence the name "Mapper".
 
-The advantage is that you get a totally valid type, which guarantees you
-type safety at compilation and completion when writing code (if your editor supports it). 
+The advantage is that you get a fully valid type, which guarantees you
+type safety at compilation and completion when writing code (if your editor supports it).
 
 Here **Clip** detected that we need one argument named `NAME`.
 
 !!! tip
     A class is allocated on the heap and passed by reference while a struct is allocated on the stack and passed by value.
     Hence structs are better suited for read only object.
-    
+
     In this tutorial we will only use structs as we will never need to edit the
     object, but you can use classes as well.
 
@@ -159,7 +159,7 @@ We said that `NAME` is an argument, that `--help` is an option, and we mentioned
 
 !!! note
     All that will follow are just conventions.
-    They are more often than not respected, but some command may have different conventions, like `tar` which accepts options with hypens.
+    They are more often than not respected, but some command may have different conventions, like `tar` which accepts options without hypens.
 
 ### CLI Parameters
 

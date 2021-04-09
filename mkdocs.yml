@@ -34,3 +34,4 @@ nav:
       - Argument types: user guide/arguments/types.md
       - Multiple arguments: user guide/arguments/multiple.md
     - Documentation: user guide/doc.md
+    - Commands: user guide/commands.md
