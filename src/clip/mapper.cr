@@ -300,7 +300,7 @@ module Clip::Mapper
                   @{{ivar.id}} = {{ivar.type.id}}.new(value)
                 {% end %}
               rescue ArgumentError
-                options_errors[{{ivar.stringify}}] = Clip::Errors::InvalidValue
+                arguments_errors[{{ivar.stringify}}] = Clip::Errors::InvalidValue
               end
             {% end %}
             {% if ivar.type < Array || ivar.type.union_types.all? { |x| x == Nil || x < Array } %}
