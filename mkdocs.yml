@@ -20,7 +20,7 @@ nav:
   - User guide:
     - Setup: user guide/setup.md
     - First steps: user guide/first_steps.md
-    - Options: 
+    - Options:
       - Optional options: user guide/options/optional.md
       - Required options: user guide/options/required.md
       - Nillable options: user guide/options/nillable.md
@@ -33,3 +33,4 @@ nav:
       - Nillable arguments: user guide/arguments/nillable.md
       - Argument types: user guide/arguments/types.md
       - Multiple arguments: user guide/arguments/multiple.md
+    - Documentation: user guide/doc.md
