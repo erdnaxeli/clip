@@ -32,3 +32,4 @@ nav:
       - Optional arguments: user guide/arguments/optional.md
       - Nillable arguments: user guide/arguments/nillable.md
       - Argument types: user guide/arguments/types.md
+      - Multiple arguments: user guide/arguments/multiple.md
