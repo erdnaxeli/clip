@@ -167,6 +167,13 @@ struct ArgumentHelp
   getter value : String? = nil
 end
 
+struct MultipleValueArgumentHelp
+  include Clip::Mapper
+
+  @[Clip::Argument]
+  getter value : Array(String)? = nil
+end
+
 struct DefaultArgumentHelp
   include Clip::Mapper
 
@@ -174,10 +181,23 @@ struct DefaultArgumentHelp
   getter value = "somevalue"
 end
 
+struct DefaultMultipleValueArgumentHelp
+  include Clip::Mapper
+
+  @[Clip::Argument]
+  getter value = ["somevalue"]
+end
+
 struct RequiredArgumentHelp
   include Clip::Mapper
 
   getter value : String
+end
+
+struct RequiredMultipleValueArgumentHelp
+  include Clip::Mapper
+
+  getter value : Array(String)
 end
 
 struct OneOptionDoc
@@ -361,7 +381,7 @@ Options:
       )
     end
 
-    it "handles a list string option" do
+    it "handles a array string option" do
       MultipleStringOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -372,7 +392,7 @@ Options:
       )
     end
 
-    it "handles a list int option" do
+    it "handles a array int option" do
       MultipleIntOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -383,7 +403,7 @@ Options:
       )
     end
 
-    it "handles a list float option" do
+    it "handles a array float option" do
       MultipleFloatOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -438,7 +458,7 @@ Options:
       )
     end
 
-    it "handles a list string option with a default option" do
+    it "handles a array string option with a default option" do
       DefaultMultipleStringOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -449,7 +469,7 @@ Options:
       )
     end
 
-    it "handles a list int option with a default option" do
+    it "handles a array int option with a default option" do
       DefaultMultipleIntOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -460,7 +480,7 @@ Options:
       )
     end
 
-    it "handles a list float option with a default option" do
+    it "handles a array float option with a default option" do
       DefaultMultipleFloatOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -526,7 +546,7 @@ Options:
       )
     end
 
-    it "handles a required list string option" do
+    it "handles a required array string option" do
       RequiredMultipleStringOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -537,7 +557,7 @@ Options:
       )
     end
 
-    it "handles a required list int option" do
+    it "handles a required array int option" do
       RequiredMultipleIntOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -548,7 +568,7 @@ Options:
       )
     end
 
-    it "handles a required list float option" do
+    it "handles a required array float option" do
       RequiredMultipleFloatOptionHelp.help("bin").should eq(
         "Usage: bin [OPTIONS]
 
@@ -572,6 +592,19 @@ Options:
       )
     end
 
+    it "handles an array argument with default" do
+      MultipleValueArgumentHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS] [VALUE]...
+
+Arguments:
+  VALUE
+
+Options:
+  --help  Show this message and exit.
+"
+      )
+    end
+
     it "handles an argument with a default value" do
       DefaultArgumentHelp.help("bin").should eq(
         "Usage: bin [OPTIONS] [VALUE]
@@ -585,9 +618,35 @@ Options:
       )
     end
 
+    it "handles an array argument with a default value" do
+      DefaultMultipleValueArgumentHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS] [VALUE]...
+
+Arguments:
+  VALUE  [default: [somevalue]]
+
+Options:
+  --help  Show this message and exit.
+"
+      )
+    end
+
     it "handles a required argument" do
       RequiredArgumentHelp.help("bin").should eq(
         "Usage: bin [OPTIONS] VALUE
+
+Arguments:
+  VALUE  [required]
+
+Options:
+  --help  Show this message and exit.
+"
+      )
+    end
+
+    it "handles a required array argument" do
+      RequiredMultipleValueArgumentHelp.help("bin").should eq(
+        "Usage: bin [OPTIONS] VALUE...
 
 Arguments:
   VALUE  [required]

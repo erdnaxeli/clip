@@ -61,6 +61,11 @@ module Clip::Help
         {% else %}
           {% help += argument.stringify.upcase %}
         {% end %}
+
+        {% if argument.type < Array ||
+                argument.type.union_types.all? { |x| x == Nil || x < Array } %}
+          {% help += "..." %}
+        {% end %}
       {% end %}
 
       {% if @type.annotation(Doc) %}
@@ -111,7 +116,7 @@ module Clip::Help
           {% suffix = "" %}
           {% if ivar.has_default_value? %}
             {% if ivar.default_value != nil %}
-              {% suffix = "[default: #{ivar.default_value.id}]" %}
+              {% suffix = "[default: #{ivar.default_value.id.gsub(/"/, "")}]" %}
             {% end %}
           {% else %}
             {% suffix = "[required]" %}
