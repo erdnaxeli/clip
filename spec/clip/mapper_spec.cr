@@ -265,6 +265,44 @@ struct ComplexParams
   getter output = "out"
 end
 
+describe EmptyOption::Help do
+  it "inherits from Clip::Mapper::Help" do
+    EmptyOption::Help.new.is_a?(Clip::Mapper::Help).should be_true
+  end
+
+  describe ".new" do
+    it "can be created without arguments" do
+      EmptyOption::Help.new
+    end
+
+    it "accept a path parameter" do
+      EmptyOption::Help.new(["add"])
+    end
+  end
+
+  describe "#help" do
+    it "gives access to the help" do
+      EmptyOption::Help.new.help.should eq(EmptyOption.help)
+    end
+
+    it "accepts a string name parameter" do
+      EmptyOption::Help.new.help("bin").should eq(EmptyOption.help("bin"))
+    end
+
+    it "accepts a nil name parameter" do
+      EmptyOption::Help.new.help(nil).should eq(EmptyOption.help(nil))
+    end
+
+    it "appends the path parameter to the name parameter" do
+      EmptyOption::Help.new(["add", "again"]).help("bin").should eq(EmptyOption.help("bin add again"))
+    end
+
+    it "appends the path parameter even if the name is nil" do
+      EmptyOption::Help.new(["add", "again"]).help(nil).should eq(EmptyOption.help("add again"))
+    end
+  end
+end
+
 describe Clip::Mapper do
   it "requires an option without default" do
     ex = expect_raises(Clip::ParsingError) do

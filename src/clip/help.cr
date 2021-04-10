@@ -1,5 +1,5 @@
 module Clip::Help
-  def help(name = PROGRAM_NAME)
+  def help(name : String? = PROGRAM_NAME)
     {% begin %}
       {% options = [] of _ %}
       {% arguments = [] of _ %}
@@ -336,11 +336,17 @@ module Clip::Help
       {% end %}
       {% help += "Show this message and exit.\n" %}
 
-      {% if help != "" %}
-        "Usage: #{name}{{help.id}}"
-      {% else %}
-        "Usage: #{name}\n"
-      {% end %}
+      String.build do |str|
+        str << "Usage:"
+
+        if !name.nil?
+          str << " " << name
+        end
+
+        {% if help != "" %}
+          str << {{help}}
+        {% end %}
+      end
     {% end %}
   end
 end

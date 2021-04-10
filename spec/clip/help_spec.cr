@@ -256,41 +256,21 @@ struct VeryLongDoc
   getter booze = true
 end
 
-describe VeryLongDoc do
-  it "inherits from Clip::Mapper::Help" do
-    VeryLongDoc::Help.new.is_a?(Clip::Mapper::Help).should be_true
-  end
-
-  describe ".new" do
-    it "can be created without arguments" do
-      VeryLongDoc::Help.new
-    end
-
-    it "accept a path parameter" do
-      VeryLongDoc::Help.new(["add"])
-    end
-  end
-
-  describe "#help" do
-    it "gives access to the help" do
-      VeryLongDoc::Help.new.help.should eq(VeryLongDoc.help)
-    end
-
-    it "accepts a name parameter" do
-      VeryLongDoc::Help.new.help("bin").should eq(VeryLongDoc.help("bin"))
-    end
-
-    it "appends the path parameter to the name parameter" do
-      VeryLongDoc::Help.new(["add", "again"]).help("bin").should eq(VeryLongDoc.help("bin add again"))
-    end
-  end
-end
-
 describe "Clip::Help" do
   describe ".help" do
-    it "default to PROGRAM_NAME" do
+    it "defaults to PROGRAM_NAME" do
       EmptyHelp.help.should eq(
         "Usage: #{PROGRAM_NAME} [OPTIONS]
+
+Options:
+  --help  Show this message and exit.
+"
+      )
+    end
+
+    it "is correct with a nill program" do
+      EmptyHelp.help(nil).should eq(
+        "Usage: [OPTIONS]
 
 Options:
   --help  Show this message and exit.

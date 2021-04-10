@@ -18,9 +18,13 @@ module Clip::Mapper
         end
       end
 
-      def help(name : String = PROGRAM_NAME)
+      def help(name : String? = PROGRAM_NAME)
         if @command
-          {{@type}}.help("#{name} #{@command}")
+          if name.nil?
+            {{@type}}.help("#{@command}")
+          else
+            {{@type}}.help("#{name} #{@command}")
+          end
         else
           {{@type}}.help(name)
         end
