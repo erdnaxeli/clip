@@ -1,4 +1,4 @@
-# Nillable arguments
+# Nilable arguments
 
 **Clip** specify in the help message if an argument is required or not, like this:
 
@@ -12,7 +12,7 @@ or
   NAME  [default: Barbara]
 ```
 
-If you don't want any message, you can declare the attribute's type nillable and set a default value `nil`:
+If you don't want any message, you can declare the attribute's type nilable and set a default value `nil`:
 
 ```Crystal hl_lines="9 10"
 require "clip"

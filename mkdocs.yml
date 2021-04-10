@@ -23,15 +23,17 @@ nav:
     - Options:
       - Optional options: user guide/options/optional.md
       - Required options: user guide/options/required.md
-      - Nillable options: user guide/options/nillable.md
+      - Nilable options: user guide/options/nilable.md
       - Flags: user guide/options/flags.md
       - Option name: user guide/options/name.md
       - Option types: user guide/options/types.md
     - Arguments:
       - Required arguments: user guide/arguments/required.md
       - Optional arguments: user guide/arguments/optional.md
-      - Nillable arguments: user guide/arguments/nillable.md
+      - Nilable arguments: user guide/arguments/nilable.md
       - Argument types: user guide/arguments/types.md
       - Multiple arguments: user guide/arguments/multiple.md
     - Documentation: user guide/doc.md
     - Commands: user guide/commands.md
+    - Help: user guide/help.md
+    - Multiple values: user guide/arrays.md

@@ -4,7 +4,7 @@ A flag is a special type of option that has no value.
 At least, for a user perspective.
 In reality the flag does have a value, but it is a boolean.
 
-Common flags you may have encountered already are `--verbose` or `--debug`. 
+Common flags you may have encountered already are `--verbose` or `--debug`.
 
 ## Default flag
 
@@ -142,7 +142,7 @@ $ ./bin/mycommand --no-yell Alice
 Hello Alice
 ```
 
-## Nillable flag
+## Nilable flag
 
 A flag can also have a default value `nil`:
 
