@@ -1,5 +1,6 @@
 require "./spec_helper"
 
+@[Clip::Doc("Some command.")]
 abstract struct Commands
   include Clip::Mapper
 
@@ -35,59 +36,93 @@ end
 
 describe "Clip" do
   describe ".add_commands" do
-    it "adds commands to the help" do
-      Commands.help("bin").should eq(
-        "Usage: bin COMMAND [ARGS]...
+    describe "#help" do
+      it "adds commands to the help" do
+        Commands.help("bin").should eq(
+          "Usage: bin COMMAND [ARGS]...
+
+Some command.
 
 Commands:
   add     Add a file.
   remove  Remove a file.
   help    Show this message and exit.
 "
-      )
-    end
+        )
+      end
 
-    it "raises an error when no commandr is provided" do
-      expect_raises(Clip::MissingCommand) do
-        Commands.parse(Array(String).new)
+      it "defaults to PROGRAM_NAME for command name" do
+        Commands.help.should eq(
+          "Usage: #{PROGRAM_NAME} COMMAND [ARGS]...
+
+Some command.
+
+Commands:
+  add     Add a file.
+  remove  Remove a file.
+  help    Show this message and exit.
+"
+        )
+      end
+
+      it "accepts nil for command name" do
+        Commands.help(nil).should eq(
+          "Usage: COMMAND [ARGS]...
+
+Some command.
+
+Commands:
+  add     Add a file.
+  remove  Remove a file.
+  help    Show this message and exit.
+"
+        )
       end
     end
 
-    it "parses a command" do
-      cmd = Commands.parse(["remove", "--cached", "somefile"])
+    describe "#parse" do
+      it "raises an error when no command is provided" do
+        expect_raises(Clip::MissingCommand) do
+          Commands.parse(Array(String).new)
+        end
+      end
 
-      cmd.class.should eq(RemoveCommand)
-      cmd = cmd.as(RemoveCommand)
-      cmd.cached.should be_true
-      cmd.file.should eq("somefile")
-    end
+      it "parses a command" do
+        cmd = Commands.parse(["remove", "--cached", "somefile"])
 
-    it "handles the help command" do
-      cmd = Commands.parse(["help"])
+        cmd.class.should eq(RemoveCommand)
+        cmd = cmd.as(RemoveCommand)
+        cmd.cached.should be_true
+        cmd.file.should eq("somefile")
+      end
 
-      cmd = cmd.as(Commands::Help)
-      cmd.help.should eq(Commands.help)
-    end
+      it "handles the help command" do
+        cmd = Commands.parse(["help"])
 
-    it "handles the help option" do
-      cmd = Commands.parse(["--help"])
+        cmd = cmd.as(Commands::Help)
+        cmd.help.should eq(Commands.help)
+      end
 
-      cmd = cmd.as(Commands::Help)
-      cmd.help.should eq(Commands.help)
-    end
+      it "handles the help option" do
+        cmd = Commands.parse(["--help"])
 
-    it "handles commands' help" do
-      cmd = Commands.parse(["remove", "--help"])
+        cmd = cmd.as(Commands::Help)
+        cmd.help.should eq(Commands.help)
+      end
 
-      cmd = cmd.as(RemoveCommand::Help)
-      cmd.help("bin").should eq(RemoveCommand.help("bin remove"))
-    end
+      it "handles commands' help" do
+        cmd = Commands.parse(["remove", "--help"])
 
-    it "handles recursive commands' help" do
-      cmd = Commands.parse(["add", "again", "--help"])
+        cmd = cmd.as(RemoveCommand::Help)
+        cmd.help("bin").should eq(RemoveCommand.help("bin remove"))
+      end
 
-      cmd = cmd.as(AgainCommand::Help)
-      cmd.help("bin").should eq(AgainCommand.help("bin add again"))
+      it "handles recursive commands' help" do
+        cmd = Commands.parse(["add", "again", "--help"])
+
+        cmd = cmd.as(AgainCommand::Help)
+        cmd.help("bin").should eq(AgainCommand.help("bin add again"))
+      end
     end
   end
 end

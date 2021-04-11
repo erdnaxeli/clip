@@ -27,7 +27,32 @@ module Clip
         end
 
         def self.help(name = PROGRAM_NAME)
-          {% help = "COMMAND [ARGS]...\n\nCommands:\n" %}
+          {% help = " COMMAND [ARGS]...\n\n" %}
+
+          {% if @type.annotation(Clip::Doc) %}
+            {% if @type.annotation(Clip::Doc).args.size != 1 %}
+              {% raise "The annotation Clip::Doc expects exactly one argument." %}
+            {% end %}
+
+            {% doc = "" %}
+            {% line = [] of _ %}
+            {% for word in @type.annotation(Clip::Doc).args[0].split(' ') %}
+              {% if (line + [word]).join(' ').size <= 80 %}
+                {% line << word %}
+              {% else %}
+                {% doc += line.join(' ') + "\n" %}
+                {% line = [word] %}
+              {% end %}
+            {% end %}
+
+            {% if line.size > 0 %}
+              {% doc += line.join(' ') + "\n" %}
+            {% end %}
+
+            {% help += doc + "\n" %}
+          {% end %}
+
+          {% help += "Commands:\n" %}
 
           {% max_command_size = "help".size %}
           {% for key, value in mapping %}
@@ -107,6 +132,17 @@ module Clip
           {% help += "Show this message and exit.\n" %}
 
           "Usage: #{name} {{help.id}}"
+          String.build do |str|
+            str << "Usage:"
+
+            if !name.nil?
+              str << " " << name
+            end
+
+            {% if help != "" %}
+              str << {{help}}
+            {% end %}
+          end
         end
 
         def self.parse(command : Array(String) = ARGV, path = Array(String).new)
