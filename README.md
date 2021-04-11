@@ -9,6 +9,8 @@ It does not print anything.
 It can read from ARGV but also from any array of strings.
 You choose what you want to do.
 
+**Documentation**: <https://erdnaxeli.github.io/clip/>
+
 ## Installation
 
 1. Add the dependency to your `shard.yml`:
@@ -25,7 +27,7 @@ You choose what you want to do.
 
 In a file command.cr:
 ```crystal
-require "./src/clip"
+require "clip"
 
 @[Clip::Doc("An example commmand.")]
 struct Command
@@ -45,8 +47,9 @@ rescue ex : Clip::ParsingError
   exit
 end
 
-if command.is_a?(Command::Help)
-  puts Command.help
+case command
+when Clip::Mapper::Help
+  puts command.help
 else
   if command.effect
     puts "Doing something with an effect on #{command.file}."
@@ -58,8 +61,8 @@ end
 
 Then:
 ```Shell
-$ crystal build command.cr 
-$ ./command 
+$ crystal build command.cr
+$ ./command
 Error:
   argument is required: FILE
 $ ./command --help
@@ -72,6 +75,7 @@ Arguments:
 
 Options:
   --effect / --no-effect  Enable some effect.  [default: false]
+  --help                  Show this message and exit.
 $ ./command myfile
 Doing something on myfile.
 $ ./command --effect myfile
