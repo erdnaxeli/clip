@@ -1,6 +1,6 @@
 # Documentation
 
-An help message showing all available options and arguments it good, but an help message documenting them is better!
+An help message showing all available options and arguments is great, but an help message documenting them is better!
 
 **Clip** allows you to add a documentation to options, arguments, and commands, all using the same annotation `Clip::Doc`.
 Let's document our command:
@@ -8,7 +8,7 @@ Let's document our command:
 ```Crystal hl_lines="6 10 12"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   @[Clip::Doc("Greet a person, one or many times.")]
@@ -41,7 +41,7 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 
 ```
 
@@ -50,9 +50,9 @@ See how beautiful our help is now:
 ```console hl_lines="7 10 13"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Greet a person, one or many times.
 
@@ -67,12 +67,12 @@ Options:
 You may have noticed that the documentation for both options `--repeat` and `--help` are aligned.
 If you have many arguments, their documentation will be aligned too.
 
-If a documentation is too big to fit in a 80 chars long line, it will be nicely wrapped:
+If a documentation is too big to fit in a 80 chars long line, it is nicely wrapped:
 
 ```Crystal hl_lines="6-9 13-16"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   @[Clip::Doc("Greet a person, one or many times. This fictitious command " \
@@ -111,7 +111,7 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 The command's doc and the `--repeat` option's doc are nicely wrapped:
@@ -119,9 +119,9 @@ The command's doc and the `--repeat` option's doc are nicely wrapped:
 ```console hl_lines="7-9 15-18"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Greet a person, one or many times. This fictitious command is actually used to
 demonstrated all the capabilities of Clip, a Crystal library to deserialize CLI

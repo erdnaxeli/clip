@@ -1,6 +1,6 @@
 # Nilable arguments
 
-**Clip** specify in the help message if an argument is required or not, like this:
+**Clip** specifies in the help message if an argument is required or not, like this:
 
 ```console
   NAME  [required]
@@ -12,12 +12,12 @@ or
   NAME  [default: Barbara]
 ```
 
-If you don't want any message, you can declare the attribute's type nilable and set a default value `nil`:
+If you don't want any message, you can declare the attribute's type as nilable and set the default value to `nil`:
 
 ```Crystal hl_lines="9 10"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -51,20 +51,20 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 !!! Tip
-    As our attribute does have a default value we need to explicitly add the `Clip::Argument` annotation.
+    Crystal cannot infer anything from `nil`, hence we need to add back the type restriction.
 
-Now the help looks like this:
+The help now looks like this:
 
 ```console hl_lines="8"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] [NAME]
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] [NAME]
 
 Arguments:
   NAME
@@ -73,11 +73,11 @@ Options:
   --help  Show this message and exit.
 ```
 
-And it set the correct default value:
+And it sets the correct default value:
 
 ```console
-$ ./bin/mycommand
+$ ./bin/myapplication
 Hello world!
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
 ```

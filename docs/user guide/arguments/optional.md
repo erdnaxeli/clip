@@ -1,11 +1,13 @@
 # Optional arguments
 
-To declare an optional argument, we can use the annotation to declare it explicitly and add a default value.
+An argument can also be optional.
+Now that we know how to declare an explicit argument, all that we have to do is add a default value.
+**Clip** will know that the argument is now optional.
 
 ```Crystal hl_lines="10"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -35,25 +37,29 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
-**Clip** will see that we added a default value to our attribute `name`, and will not require anymore the argument.
+!!! Tip
+    As we added a default value, we can remove the type restriction.
+    Crystal infers it from the default value.
+
+`NAME` is not required anymore:
 
 ```console hl_lines="8 14"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] [NAME]
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] [NAME]
 
 Arguments:
   NAME  [default: Barbara]
 
 Options:
   --help  Show this message and exit.
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
-$ ./bin/mycommand
+$ ./bin/myapplication
 Hello Barbara
 ```

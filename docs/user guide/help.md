@@ -1,6 +1,6 @@
 # Help
 
-**Clip** generates for your commands an help message, respecting the known convention used since decades by many CLI applications, as we already seen it in the previous sections.
+**Clip** generates an help message for every commands, respecting the known conventions used since decades by many CLI applications, as we already seen it in the previous sections.
 
 ## The `#help` method
 
@@ -15,7 +15,7 @@ The `#help` method returns the help message:
 ```Crystal hl_lines="14"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -30,15 +30,15 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -48,14 +48,14 @@ Options:
   --help            Show this message and exit.
 ```
 
-This method accepts one parameter that will be used as the program's name.
+This method accepts one parameter: the program's name.
 The default value is `PROGRAM_NAME`.
-You can also give it a `nil` parameter, this will be useful for [non CLI appliaction](non_cli_app.md).
+You can set it to `nil`, which is useful for [non CLI appliaction](non_cli_app.md).
 
 ```Crystal hl_lines="14 16"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -72,14 +72,14 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 ```console hl_lines="5 14"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand
+Building: myapplication
+$ ./bin/myapplication
 Usage: tutorialapp [OPTIONS] NAME
 
 Arguments:
@@ -101,14 +101,14 @@ Options:
 
 # The `Help` object
 
-The `#help` method is fine, but it does not work when you have nested commands.
-As it is called on the method itself, it has no context about the command being nested or not.
+The `#help` method is fine, but it does not work with nested commands.
+As it is called on the command itself, it has no context about the command being nested or not.
 
 See this example:
 ```Crystal hl_lines="9 21"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   abstract struct Command
@@ -130,15 +130,15 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 ```console hl_lines="5"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -149,23 +149,23 @@ Options:
 ```
 
 Here the usage shown is wrong.
-If you try this to excute `./bin/mycommand Alice` it will actually complains that `Alice` is an unknown command.
+If you try this to excute `./bin/myapplication Alice` it will actually complains that `Alice` is an unknown command.
 
 Futhermore, you probably want to show the help when the user ask for it.
-And you can try, but setting an `--help` option yourself would require to define all other options and arguments as optional, as you probably don't want that `./bin/mycommand --help` complains about `NAME` not being set.
-And setting everything optional defeat the purpose of having a library checking for required options an arguments for you.
+And you can try, but setting an `--help` option yourself would require to define all other options and arguments as optional, as you probably don't want that `./bin/myapplication --help` complains about `NAME` not being set.
+And setting everything optional defeat the purpose of having a library validating required options an arguments for you.
 
-So to fix all that **Clip** provide a special mechanism for the help.
-We actually already seen it.
+So to fix all that **Clip** provides a special mechanism for the help.
+We have used it already.
 
-When using `#parse`, **Clip** will check _before the parsing_ if the user input contains `--help` (or `help` if the command has nested commands).
-If it is the case, it will return a special object `Help`.
-The parsing will not be done, so missing required options or arguments will not raise an error.
+When using `#parse`, **Clip** checks _before the parsing_ if the user input contains `--help` (or `help` if the command has nested commands).
+If it is the case, it returns a special object `Help`.
+The parsing is not done, so missing required options or arguments don't raise an error.
 
 The `Help` object has two properties:
 
 * it inherits from `Clip::Mapper::Help`
-* it expose a method `#help`
+* it exposes a method `#help`
 
 The first property is useful when using nested commands.
 The `Help` type is generated for each command, so without this property you would have to check if the returned value from `#parse` is an `Help` object _for each available command_.
@@ -179,7 +179,7 @@ Let's fix our previous example with a nested command:
 ```Crystal hl_lines="9 28-30"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   abstract struct Command
@@ -211,7 +211,7 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 The help is now correct:
@@ -219,9 +219,9 @@ The help is now correct:
 ```console hl_lines="5"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand hello --help
-Usage: ./bin/mycommand hello [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication hello --help
+Usage: ./bin/myapplication hello [OPTIONS] NAME
 
 Arguments:
   NAME  [required]

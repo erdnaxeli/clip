@@ -5,18 +5,18 @@ Arguments are **positional parameters**.
 By default:
 
 * an attribute is mapped to an argument if it has no default value
-* and so an argument is required
+* and as it has no default value, it is required
 
-We will see in the next page how we can make an optional argument.
+We will see in the next page how to make an argument optional.
 
 ## An implicit argument
 
-Let's take back our initial command:
+Let's take back our initial application:
 
 ```Crystal hl_lines="9"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -45,10 +45,10 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
-We defined an attribute `name` which is a string without default value.
+We defined an attribute `name` with a `String` type and no default value.
 **Clip** maps it to an argument, as we already saw.
 
 Let's enjoy it again :)
@@ -56,18 +56,18 @@ Let's enjoy it again :)
 ```console hl_lines="8 12 14 16"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
 
 Options:
   --help  Show this message and exit.
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
-$ ./bin/mycommand 
+$ ./bin/myapplication
 Error:
   argument is required: NAME
 ```
@@ -79,7 +79,7 @@ Like options, we can also explicitly declare our attribute as an argument with t
 ```Crystal hl_lines="9"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -109,7 +109,7 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 It still behaves the same:
@@ -117,18 +117,18 @@ It still behaves the same:
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
 
 Options:
   --help  Show this message and exit.
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
-$ ./bin/mycommand
+$ ./bin/myapplication
 Error:
   argument is required: NAME
 ```

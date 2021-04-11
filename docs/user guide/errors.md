@@ -1,6 +1,6 @@
 # Errors
 
-When calling `#parse` you should catch errors, unless you want your program to crash in a bad way.
+When calling `#parse` you should always rescue errors, unless you want your application to crash in a bad way.
 The method can raises 3 different errors.
 Those errors have two common properties:
 
@@ -14,7 +14,7 @@ The first property means you can rescue only `Clip::Errors`, and the second one 
 
 ## Parsing error
 
-If the parsing of options and arguments failed a `Clip::ParsingError` exception will be raised.
+If the parsing of options and arguments failed, a `Clip::ParsingError` exception is raised.
 The exception's message is already a ready-to-use message that you can present to the user, but the exception also provides a way to know what happens exactly.
 
 ### Options parsing error
@@ -22,7 +22,7 @@ The exception's message is already a ready-to-use message that you can present t
 The errors related to options parsing are accessible with `Clip::ParsingError#options`.
 It returns a `Hash(String, Clip::Errors)`
 
-The key is the name of the option which triggers the error.
+The key is the name of the option which triggered the error.
 If the option was present in the user input, the name used will be kept.
 If not, there are two cases: either the option has no names specified with the `Clip::Option` annotation and the default one is used, or the first name in the annotation is used.
 
@@ -52,7 +52,7 @@ Excess arguments are ignored, hence you will never get an `Unknown` error.
 ```Crystal
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -74,17 +74,17 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --repeat
+Building: myapplication
+$ ./bin/myapplication --repeat
 ex.options   # => {"--yell" => Required, "--repeat" => MissingValue}
 ex.arguments # => {"name" => Required}
-$ ./bin/mycommand --yell -r yes --name Alice Barbara
+$ ./bin/myapplication --yell -r yes --name Alice Barbara
 ex.options   # => {"-r" => InvalidValue, "--name" => Unknown}
 ex.arguments # => {}
 ```
@@ -93,13 +93,13 @@ ex.arguments # => {}
 
 When using nested commands, two exceptions can be raised:
 
-* `Clip::MissingCommand`: a nested command was expected, but none is provided.
+* `Clip::MissingCommand`: a nested command is expected but none is provided.
 * `Clip::UnknownCommand`: the provided nested command is unknown. The command is accessible with `Clip::UnknownCommand.command`.
 
 ```Crystal
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   abstract struct Command
@@ -123,16 +123,16 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand
+Building: myapplication
+$ ./bin/myapplication
 #<Clip::MissingCommand:Error: you need to provide a command.>
-$ ./bin/mycommand goodbye
+$ ./bin/myapplication goodbye
 ex.command # => "goodbye"
 ```
 

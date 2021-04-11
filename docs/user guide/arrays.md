@@ -8,17 +8,17 @@ $ curl --header "X-First-Name: Jean" --header "X-Last-Name: Martin" http://frenc
 $ ls file1 file2 file3
 ```
 
-Here we gave 2 `--headers` to `curl`, and 3 `FILE` argument to `ls`.
+Here we gave 2 `--headers` options to `curl`, and 3 `FILE` argument to `ls`.
 
 **Clip** also supports that.
-All you have to do is to declare you option or argument's type as an array.
+We just declare our option or argument's type as an array.
 
 ## Options with multiple value
 
 ```Crystal hl_lines="9"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -47,22 +47,22 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 ```console hl_lines="8 12 13"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS]
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS]
 
 Options:
   --name TEXT  [default: [World]]
   --help       Show this message and exit.
-$ ./bin/mycommand
+$ ./bin/myapplication
 Hello World
-$ ./bin/mycommand --name Alice --name Barbara --name Chloé
+$ ./bin/myapplication --name Alice --name Barbara --name Chloé
 Hello Alice, Barbara, Chloé
 ```
 
@@ -71,7 +71,7 @@ Hello Alice, Barbara, Chloé
 ```Crystal hl_lines="9"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -100,22 +100,22 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 ```console hl_lines="5 8 12 13"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME...
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME...
 
 Arguments:
   NAME  [required]
 
 Options:
   --help  Show this message and exit.
-$ ./bin/mycommand Alice Barbara Chloé
+$ ./bin/myapplication Alice Barbara Chloé
 Hello Alice, Barbara, Chloé
 ```
 

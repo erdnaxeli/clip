@@ -9,12 +9,12 @@
 ---
 
 Clip is a library for building CLI or CLI-like [Crystal](https://crystal-lang.org) applications.
-By CLI-like applications I mean every application that interacts with the user in a CLI style, like IRC bots.
+_A CLI-like application_ means any application that interacts with the user in a CLI style, like IRC bots.
 
 The major features of Clip are:
 
-* **Easy to write**: All you need to write is a type. No new DSL to learn, and compilation time type validation.
-* **Easy to use**: Make beautiful applications with standard behaviors and automatic error and help messages.
+* **Easy to write**: All you need to write is a class (or struct). No new DSL to learn, and compilation time type validation.
+* **Easy to use**: Make user friendly applications with standard behaviors and automatic error and help messages.
 * **You are in control**: No code automatically executed for you, no messages printed to stdout. You do what you want, when you want.
 
 ## Requirements
@@ -82,7 +82,7 @@ Hello Alice
 
 ## Advanced example
 
-Let's do a more advanced, with some subcommands.
+Let's do a more advanced, with some commands.
 
 ```Crystal hl_lines="6-9 32 33 35"
 require "clip"
@@ -94,18 +94,17 @@ abstract struct Command
     "hello"   => HelloCommand,
     "goodbye" => GoodbyeCommand,
   })
+
+  getter name : String
 end
 
 struct HelloCommand < Command
   include Clip::Mapper
-
-  getter name : String
 end
 
 struct GoodbyeCommand < Command
   include Clip::Mapper
 
-  getter name : String
   getter sad = false
 end
 
@@ -130,9 +129,10 @@ when Clip::Mapper::Help
 end
 ```
 
-That add two new subcommands: "hello" and "goodbye".
+It adds two commands: "hello" and "goodbye".
 
 ```console
+$ crystal build command.cr
 $ ./command
 Error: you need to provide a command.
 $ ./command help

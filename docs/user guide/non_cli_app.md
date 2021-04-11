@@ -1,14 +1,14 @@
 # Non CLI applications
 
-In this whole documentation we used a CLI application to demonstrate the capabilities of **CLIP**.
-But one goal of **CLIP** is to work as well for a CLI application than for an application which interacts with users in a text way and want to use options, arguments or commands.
+In this whole documentation we used a CLI application to demonstrate the capabilities of **Clip**.
+But one goal of **Clip** is to work as well for a CLI application than for an application which interacts with users in a text way and want to use options, arguments or commands.
 
 Example of such applications are REPL or text bots (like IRC bots).
 
 Let's build a very simple REPL:
 
 ```Crystal
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   def self.run
@@ -30,7 +30,7 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 It does not do much, but it does something:
@@ -38,8 +38,8 @@ It does not do much, but it does something:
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand
+Building: myapplication
+$ ./bin/myapplication
 > help
 Unknown command.
 > hello
@@ -50,9 +50,9 @@ Hello, world!
 Now we would like to let the user specify the person to greet.
 We could try to parse the input when it starts with "hello", and accept one argument.
 Then we may want to add another feature that could be enabled but would be disabled by default, something like… an option.
-And then we will probably want to add some others commands, and we will need a help so the user could known which commands are available and how to use them.
+And then we will probably want to add some others commands, and we will need an help command so the user could known which commands are available and how to use them.
 
-You've probably guessed it yet: we want to interact with our REPL like we would do it with a CLI application.
+You have probably guessed it yet: we want to interact with our REPL like we would do with a CLI application.
 So why writing all this mechanism by ourself?
 Unlike most of the CLI application libraries, **Clip** was built from the begining with this use case in mind.
 That's why **Clip** _never_ prints anything by itself.
@@ -65,7 +65,7 @@ require "process"
 
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   @[Clip::Doc("Greet a person.")]
@@ -128,7 +128,7 @@ module Mycommand
           return
         end
       else
-        # we get here if the user typed ^D
+        # we get here if the user types ^D
         puts
         return
       end
@@ -150,7 +150,7 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 !!! Tip
@@ -162,8 +162,8 @@ Now we have options and arguments support, beautiful help messages, and error ha
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand
+Building: myapplication
+$ ./bin/myapplication
 > help
 Usage: COMMAND [ARGS]...
 

@@ -1,6 +1,6 @@
 # Nilable options
 
-You may have noticed that **Clip** adds in the help message if the option have a default value or is required.
+You may have noticed that **Clip** adds in the help message if the option has a default value or is required.
 It looks like this:
 
 ```console
@@ -13,15 +13,15 @@ or
   --repeat INTEGER  [required]
 ```
 
-Sometime you may not want those messages to be shown.
+Sometimes you may not want those messages to be shown.
 Maybe you want the option to be optional and have a default value, but you don't want to expose this value to the user.
 
-What you can do is making the attribute's type nilable and set a default value `nil`:
+We can do this by making the attribute's type nilable and set its default value `nil`:
 
-```Crystal hl_lines="10 30"
+```Crystal hl_lines="9 29"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -55,7 +55,7 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 !!! Tip
@@ -64,14 +64,14 @@ Mycommand.run
 !!! Note
     `command.repeat` is now either an `Int32` or a `Nil` value, so we can't directly call `#times` on it or the compiler will complain that this method is not defined for `Nil`.
 
-Now the help looks like this:
+The help now looks like this:
 
 ```console hl_lines="11"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -81,13 +81,13 @@ Options:
   --help            Show this message and exit.
 ```
 
-The behavior is still the same:
+And the behavior is still the same:
 ```console
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
-$ ./bin/mycommand --repeat 2 Alice
+$ ./bin/myapplication --repeat 2 Alice
 Hello Alice
 Hello Alice
 ```
 
-Whether you choose to use a default `nil` value or not is on you!
+Whether you choose to use a default `nil` value or not is up to you.

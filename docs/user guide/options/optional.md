@@ -5,18 +5,18 @@ Options are **named parameters**.
 By default:
 
 * an attribute is mapped to an option if it has a default value,
-* and so an option is optional
+* and as it has a default value, it is optional
 
 We will see in the next page how this can be changed.
 
 ## An implicit option
 
-First, we will add an option to our command:
+First, we add an option to our command:
 
 ```Crystal hl_lines="9 24 28 29"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -46,19 +46,19 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 !!! Tip
-    We don't have to specify the type of the attribute `repeat`, as the compiler will infer that it is an `Int32`.
+    We don't have to specify the type of the attribute `repeat`, as the compiler will infer from the default value `1` that it is an `Int32`.
 
-Let's try our new option:
+Let's try our option:
 ```console hl_lines="11 15"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -66,31 +66,30 @@ Arguments:
 Options:
   --repeat INTEGER  [default: 1]
   --help            Show this message and exit.
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
-$ ./bin/mycommand --repeat 2 Alice
+$ ./bin/myapplication --repeat 2 Alice
 Hello Alice
 Hello Alice
 ```
 
 It all works as expected: the option `--repeat` is optional and has a default value.
 
-You can also use an `=` character to define the value:
+We can also use an `=` character to define the value:
 ```console
-$ ./bin/mycommand --repeat=2 Alice
+$ ./bin/myapplication --repeat=2 Alice
 Hello Alice
 Hello Alice
 ```
 
 ## An explicit option
 
-We can also explicitly declare our attribute as an option.
-We use for that the annotation `Clip::Option`.
+An option can be explicitly declared with the annotation `Clip::Option`.
 
 ```Crystal hl_lines="9"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -121,17 +120,17 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
-Nothing should have changed:
+Nothing has changed:
 
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -139,9 +138,9 @@ Arguments:
 Options:
   --repeat INTEGER  [default: 1]
   --help            Show this message and exit.
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
-$ ./bin/mycommand --repeat 2 Alice
+$ ./bin/myapplication --repeat 2 Alice
 Hello Alice
 Hello Alice
 ```

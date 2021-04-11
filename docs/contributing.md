@@ -1,9 +1,9 @@
 # Contributing
 
-Feel free to contribute to **Clip**.
+Feel free to contribute to **Clip**!
 
 If you spot a bug, you can [open a pull request](https://github.com/erdnaxeli/clip/pulls) to fix it.
-If you want to contribute but are not sure about how to do it, just [open an issue](https://github.com/erdnaxeli/clip/issues) to talk discuss about it.
+If you are not sure how to do it, just [open an issue](https://github.com/erdnaxeli/clip/issues) to discuss about it.
 
 Here are some tips to develop on **Clip**, assuming you have already cloned the repository.
 
@@ -24,7 +24,7 @@ Postinstall of ameba: make bin && make run_file
 
 Always remember to commit your modification on a separated branch.
 
-The majority of the **Clip** features are done by macros.
+The majority of the **Clip** features are done with macros.
 Macros look like Crystal code, but they actually use a different language that is interpreted at compilation time by the compiler.
 The code is not easy to read, don't hesitate to ask for help!
 
@@ -66,4 +66,4 @@ Finished in 279.16 milliseconds
 ## Open a pull request
 
 Your code is now done, congrats!
-Your can open a pull request, I will try to at it quickly :)
+Your can open a pull request, I will try to look at it quickly :)

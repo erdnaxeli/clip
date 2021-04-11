@@ -1,23 +1,23 @@
 # Options types
 
-So for we have use two different types for options: integers and booleans.
+So for we used two different types for options: integers and booleans.
 But you can use more!
 
 The supported types are:
- 
+
 * all subtypes of `Int`: `Int32`, `UInt32`, and all others
 * all subtypes of `Float`: `BigFloat`, `Float32` and `Float64`
 * `Bool`
 * `String`
 * and all those types combined with `Nil`: `Int32?`, `Float32?`, `Bool?`, `String?`, and so on.
 
-During the parsing, **Clip** will try to convert the string to the attribute's type.
-If any error happens, a `Clip::ParsingError` will be raised (see the [errors section](../errors.md) for details).
+During the parsing, **Clip** tries to convert the string to the attribute's type.
+If any error happens, a `Clip::ParsingError` is raised (see the [errors section](../errors.md) for details).
 
 ```Crystal
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -47,14 +47,14 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --repeat two Alice
+Building: myapplication
+$ ./bin/myapplication --repeat two Alice
 Error:
   option's value is invalid: --repeat
 ```

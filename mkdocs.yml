@@ -42,8 +42,8 @@ nav:
     - Multiple values: user guide/arrays.md
     - Errors: user guide/errors.md
     - Non CLI applications: user guide/non_cli_app.md
-  - Alternatives, inspirations and comparisons: alternatives.md
-  - Get help: help.md
+  - Alternatives: alternatives.md
+  - Get help — Help Clip: help.md
   - Contributing: contributing.md
   - Release notes: release-notes.md
 

@@ -1,19 +1,19 @@
 # Flags
 
-A flag is a special type of option that has no value.
-At least, for a user perspective.
-In reality the flag does have a value, but it is a boolean.
+A flag is a special option that has no value, at least from a user perspective.
+The flag actually does have a value, but it is a boolean.
 
 Common flags you may have encountered already are `--verbose` or `--debug`.
+They are usually used to enabled or disabled a feature.
 
 ## Default flag
 
-A flag is boolean option, so all you need to do is defining an attribute with a `Bool` type.
+A flag is boolean option, so all we need to do is define an attribute with a `Bool` type.
 
 ```Crystal hl_lines="9"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -47,17 +47,20 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
-**Clip** generate two options for flag, one for a `true` value, and the other for the `false` value:
+**Clip** generate two options for each flag:
+
+* one for a `true` value
+* the other for the `false` value
 
 ```console hl_lines="11"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -65,11 +68,11 @@ Arguments:
 Options:
   --yell / --no-yell  [default: false]
   --help              Show this message and exit.
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
-$ ./bin/mycommand --yell Alice
+$ ./bin/myapplication --yell Alice
 HELLO ALICE
-$ ./bin/mycommand --no-yell Alice
+$ ./bin/myapplication --no-yell Alice
 Hello Alice
 ```
 
@@ -80,7 +83,7 @@ As any option, a flag can be required:
 ```Crystal hl_lines="9 10"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -115,7 +118,7 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
 No setting the flag is now an error:
@@ -123,9 +126,9 @@ No setting the flag is now an error:
 ```console hl_lines="11 15"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -133,12 +136,12 @@ Arguments:
 Options:
   --yell / --no-yell  [required]
   --help              Show this message and exit.
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Error:
   option is required: --yell
-$ ./bin/mycommand --yell Alice
+$ ./bin/myapplication --yell Alice
 HELLO ALICE
-$ ./bin/mycommand --no-yell Alice
+$ ./bin/myapplication --no-yell Alice
 Hello Alice
 ```
 
@@ -149,7 +152,7 @@ A flag can also have a default value `nil`:
 ```Crystal hl_lines="9 10 29"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -175,7 +178,7 @@ module Mycommand
   end
 
   def self.hello(name, yell)
-    if !yell.nil? && yell
+    if yell
       puts "Hello #{name}".upcase
     else
       puts "Hello #{name}"
@@ -183,15 +186,18 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
+
+!!! Tip
+    As `nil` is a falsy value  we don't have to write `if !yell.nil? && yell`.
 
 ```console hl_lines="11"
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -199,10 +205,10 @@ Arguments:
 Options:
   --yell / --no-yell
   --help              Show this message and exit.
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
-$ ./bin/mycommand --yell Alice
+$ ./bin/myapplication --yell Alice
 HELLO ALICE
-$ ./bin/mycommand --no-yell Alice
+$ ./bin/myapplication --no-yell Alice
 Hello Alice
 ```

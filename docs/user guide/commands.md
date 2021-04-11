@@ -1,20 +1,20 @@
 # Commands
 
-So far we have seen how to have options and arguments.
-But **Clip** also supports _commands_.
+We have seen how to have options and arguments.
+**Clip** also supports _commands_.
 
-You have already use commands, as many CLI applications use them.
+You have already used commands, as many CLI applications use them.
 For example `shards` has many commands: `install` and `build` are two of them, and you use them by typing `shards install` and `shards build`.
 
 A command has its own options and arguments.
 Actually, the struct `Command` that we used until now in this tutorial is already a command.
-Nesting other commands under an existing one require:
+Nesting other commands under an existing one requires:
 
 * to define the new subcommands as their own type
-* to declare inside the wrapping command them using the `Clip.add_command` macro
+* to register them inside the wrapping command using the `Clip.add_command` macro
 
 Commands nested with `Clip.add_commands` can also use `Clip.add_commands` to nest other commands.
-**Clip** does not enforce any limitation of the nesting level.
+**Clip** does not enforce any limitation on the nesting level.
 
 !!! Note
     Command are often called _subcommands_.
@@ -26,7 +26,7 @@ We will move the actual behavior to a command `hello` and create a new one calle
 ```Crystal hl_lines="6 9-12 14 17-21 23-29 39 40 42 44"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   abstract struct Command
@@ -38,12 +38,11 @@ module Mycommand
     })
 
     getter repeat = 1
+    getter name : String
   end
 
   struct HelloCommand < Command
     include Clip::Mapper
-
-    getter name : String
   end
 
   struct GoodbyeCommand < Command
@@ -51,7 +50,6 @@ module Mycommand
 
     @[Clip::Option("--yell")]
     getter yell : Bool? = nil
-    getter name : String
   end
 
   def self.run
@@ -87,17 +85,17 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
-A lot have changed!
+A lot has changed!
 
-We define two new types: `HelloCommand` and `GoodbyeCommand`.
+We defined two new types: `HelloCommand` and `GoodbyeCommand`.
 Those types inherit from `Command` and define their own options and arguments.
-We keep the attribute `repeat` inside `Command` as both commands will use it.
+We keep the attributes `repeat` and `name` inside `Command` as both commands use them.
 
 
-We then declare those types as nested commands under `Command` using `Clip.add_commands`.
+We then register those types as nested commands under `Command` using `Clip.add_commands`.
 The `Command#parse` method changes to now dispatch the parsing to `HelloCommand` or `GoodbyeCommand` according to the user input.
 
 To check what command the user want to run, we use a `case` clause on the type of the returned object.
@@ -114,16 +112,16 @@ We can check that our two commands behave as expected:
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand COMMAND [ARGS]...
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication COMMAND [ARGS]...
 
 Commands:
   hello
   goodbye
   help     Show this message and exit.
-$ ./bin/mycommand hello --help
-Usage: ./bin/mycommand hello [OPTIONS] NAME
+$ ./bin/myapplication hello --help
+Usage: ./bin/myapplication hello [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -131,13 +129,13 @@ Arguments:
 Options:
   --repeat INTEGER  [default: 1]
   --help            Show this message and exit.
-$ ./bin/mycommand hello Alice
+$ ./bin/myapplication hello Alice
 Hello Alice
-$ ./bin/mycommand hello --repeat 2 Alice
+$ ./bin/myapplication hello --repeat 2 Alice
 Hello Alice
 Hello Alice
-$ ./bin/mycommand goodbye --help
-Usage: ./bin/mycommand goodbye [OPTIONS] NAME
+$ ./bin/myapplication goodbye --help
+Usage: ./bin/myapplication goodbye [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
@@ -146,13 +144,13 @@ Options:
   --repeat INTEGER  [default: 1]
   --yell
   --help            Show this message and exit.
-$ ./bin/mycommand goodbye Alice
+$ ./bin/myapplication goodbye Alice
 Goodbye Alice
-$ ./bin/mycommand goodbye --repeat 2 --yell Alice
+$ ./bin/myapplication goodbye --repeat 2 --yell Alice
 GOODBYE ALICE
 GOODBYE ALICE
 ```
 
-You may have noticed than the first help message shows a command `help` but not an option `--help`.
+You may have noticed that the first help message shows a command `help` but not an option `--help`.
 Indeed, as it is using commands, the help is now a command too.
 But to simplify the access to the help the `--help` option is still available, although not shown in the help message.

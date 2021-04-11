@@ -1,4 +1,4 @@
-# Get help
+# Get help — Help Clip
 
 This project use [github Discussions](https://github.com/erdnaxeli/clip/discussions) for community discussions.
 Don't hesitate to start a discussion if you need help!

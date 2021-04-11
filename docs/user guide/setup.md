@@ -1,35 +1,36 @@
 # Setup
 
 This tutorial will cover step by step all the features of **Clip**.
+We will build a project together to explore them.
 You need a working Crystal environment.
 
-First, you need a new project:
+First, we create a new project:
 
 ```console
-$ crystal init app mycommand
-    create  /home/erdnaxeli/bacasable/mycommand/.gitignore
-    create  /home/erdnaxeli/bacasable/mycommand/.editorconfig
-    create  /home/erdnaxeli/bacasable/mycommand/LICENSE
-    create  /home/erdnaxeli/bacasable/mycommand/README.md
-    create  /home/erdnaxeli/bacasable/mycommand/.travis.yml
-    create  /home/erdnaxeli/bacasable/mycommand/shard.yml
-    create  /home/erdnaxeli/bacasable/mycommand/src/mycommand.cr
-    create  /home/erdnaxeli/bacasable/mycommand/spec/spec_helper.cr
-    create  /home/erdnaxeli/bacasable/mycommand/spec/mycommand_spec.cr
-Initialized empty Git repository in /home/erdnaxeli/bacasable/mycommand/.git/
+$ crystal init app myapplication
+    create  /home/erdnaxeli/bacasable/myapplication/.gitignore
+    create  /home/erdnaxeli/bacasable/myapplication/.editorconfig
+    create  /home/erdnaxeli/bacasable/myapplication/LICENSE
+    create  /home/erdnaxeli/bacasable/myapplication/README.md
+    create  /home/erdnaxeli/bacasable/myapplication/.travis.yml
+    create  /home/erdnaxeli/bacasable/myapplication/shard.yml
+    create  /home/erdnaxeli/bacasable/myapplication/src/myapplication.cr
+    create  /home/erdnaxeli/bacasable/myapplication/spec/spec_helper.cr
+    create  /home/erdnaxeli/bacasable/myapplication/spec/myapplication_spec.cr
+Initialized empty Git repository in /home/erdnaxeli/bacasable/myapplication/.git/
 ```
 
-Then you have to add **Clip** as a dependency in `shards.yml`:
+Then we add **Clip** as a dependency in `shards.yml`:
 ```Yaml
 dependencies:
   clip:
     github: erdnaxeli/clip
 ```
 
-For a real project you should add a constraint on the version, but we will skip it here.
-You can see the latest versions on the [releases page](https://github.com/erdnaxeli/clip/releases).
+In a real project you should add a constraint on the version, but we will skip it here.
+You can see the latest version in the header of this documentation or on the [releases page](https://github.com/erdnaxeli/clip/releases).
 
-You can now build the app and run it:
+We can now build the app and run it:
 
 ```console
 $ shards build
@@ -37,9 +38,9 @@ Resolving dependencies
 Fetching https://github.com/erdnaxeli/clip.git
 Installing clip (0.2.2)
 Writing shard.lock
-Building: mycommand
-$ ./bin/mycommand
+Building: myapplication
+$ ./bin/myapplication
 $
 ```
 
-In the next step we will do a first simple application.
+In the next step we will write a simple application.

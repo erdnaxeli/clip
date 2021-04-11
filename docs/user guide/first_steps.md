@@ -1,11 +1,11 @@
 # First steps
 
-Let's do a hello world like app. We will change `src/mycommand.cr` to:
+Let's do a hello world like app. We change `src/myapplication.cr` to:
 
 ```Crystal hl_lines="1 6-10 13-18 20-24"
 require "clip"
 
-module Mycommand
+module Myapplication
   VERSION = "0.1.0"
 
   struct Command
@@ -34,25 +34,25 @@ module Mycommand
   end
 end
 
-Mycommand.run
+Myapplication.run
 ```
 
-You can build and run the app, it will work as expected:
+We can build and run the app, it works as expected:
 ```console
 $ shards build
 Dependencies are satisfied
-Building: mycommand
-$ ./bin/mycommand --help
-Usage: ./bin/mycommand [OPTIONS] NAME
+Building: myapplication
+$ ./bin/myapplication --help
+Usage: ./bin/myapplication [OPTIONS] NAME
 
 Arguments:
   NAME  [required]
 
 Options:
   --help  Show this message and exit.
-$ ./bin/mycommand Alice
+$ ./bin/myapplication Alice
 Hello Alice
-$ ./bin/mycommand
+$ ./bin/myapplication
 Error:
   argument is required: NAME
 ```
@@ -70,12 +70,11 @@ end
 ```
 
 **Clip** works by including `Clip::Mapper` inside a user defined type, a class or a struct.
-When including this module, a macro is executed to generates a constructor, the method `#parse` we used earlier, and the help.
-It does that by analysing the type's attributes to find what option and arguments will need to be parsed.
-We said it _maps_ the type definition to the expected CLI parameters, hence the name "Mapper".
+When the module is included, a macro is executed and generates a constructor, the method `#parse` we used, and the help message.
+It does that by analysing the type's attributes to find options and arguments.
+We say it _maps_ the type definition to the expected CLI parameters, hence the name "Mapper".
 
-The advantage is that you get a fully valid type, which guarantees you
-type safety at compilation and completion when writing code (if your editor supports it).
+The advantage is that we have a classic type definition, which guarantees us type validation at compilation time.
 
 Here **Clip** detected that we need one argument named `NAME`.
 
@@ -100,13 +99,13 @@ end
 As said before, the macro creates a `#parse` method.
 It accepts an array of strings, and defaults to `ARGV`.
 
-This method act like a constructor.
+This method acts as a constructor.
 It tries to parse the input, and on success it returns a new object.
 
 But there are two other cases:
 
 * on user input failure, it raises an error
-* if the user use the special flag `--help`, it returns a special object
+* if the user uses the special flag `--help`, it returns a special `Help` object
 
 ## Catching user input error
 
@@ -119,19 +118,19 @@ rescue ex : Clip::Error
 end
 ```
 
-If the user made a mistake, by example by using an option not defined or not giving a required argument, the `#parse` method will raise an exception.
+If the user makes a mistake, by example if he uses an option not defined or does not set a required argument, the `#parse` method raises an exception.
 
-For now you only need to know two facts:
+The exceptions raised by `#parse` have two properties:
 
-* the exception always inherits from `Clip::Error`
-* the exception's message is a preformatted error message
+* they always inherits from `Clip::Error`
+* their message is a preformatted error message
 
 This means that you can just rescue `Clip::Error` and puts the rescued exception to show the user a nice error message, as we just did.
 We will see later in this tutorial exactly what exceptions can be raised and how you can use them to format your own error messages.
 
 ## The help case
 
-```Crystal
+```Crystal hl_lines="1 2"
 if command.is_a?(Clip::Mapper::Help)
   puts command.help
 else
@@ -140,17 +139,29 @@ end
 ```
 
 The help option is a special case that needs a special treatment.
-When the user use `--help`, it does not expect to get an error because `NAME` is required and was not provided.
+When the user set `--help`, he does not expect to get an error because `NAME` is required and was not provided.
 But `NAME` _is_ indeed required, and we cannot return a `Command` instance as the Crystal compiler will complain that `@name` was not initialized (and we don't want to initialize it with a random or arbitrary value).
 
-The choice made by **Clip** is to return a instance of a special type `Command::Help`.
+The choice made by **Clip** is to return a instance of the special type `Command::Help`.
 This type was generated when including the `Clip::Mapper` module and has two properties:
 
-1. it inherits from `Clip::Mapper::Help`, which will be useful when we will look at commands
-2. it provide a method `#help` that return the generated help message
+1. it inherits from `Clip::Mapper::Help`
+2. it provide a method `#help` that returns the generated help message
 
-That why we do this first check using `#is_a?`, and we print the help if requested by the user.
-In the `else` clause the compiler knows that our object is an instance of `Command`, and we can use its "name" attribute.
+That why we do this first check using `#is_a?`: to print the help if requested by the user.
+
+## Accessing the user input
+
+```Crystal hl_lines="4"
+if command.is_a?(Clip::Mapper::Help)
+  puts command.help
+else
+  hello(command.name)
+end
+```
+
+Finally we use the user input wich was filled into the object attributes.
+As we are in the `else` clause of `if command.is_a?(Clip::Mapper::Help)` the compiler knows that our object is an instance of `Command`, and we can use its attribute `name`.
 
 ## Options, arguments and parameters
 
@@ -158,7 +169,7 @@ So far we used those tree words.
 We said that `NAME` is an argument, that `--help` is an option, and we mentioned _CLI parameters_. But what are they?
 
 !!! note
-    All that will follow are just conventions.
+    All that follows is just conventions.
     They are more often than not respected, but some command may have different conventions, like `tar` which accepts options without hypens.
 
 ### CLI Parameters
@@ -183,6 +194,6 @@ In this fictitious command there are 4 options:
 
 ### Arguments
 
-An _argument_ is a specific type of parameter that must not be named.
+An _argument_ is a specific type of parameter that have a value but is not be named.
 
-In our command `mycommand` the usage says: `./bin/mycommand [OPTIONS] NAME`. `NAME` is an argument, so you don't have to do `./bin/mycommand --name Alice` but instead just `./bin/mycommand Alice` works.
+In our command `myapplication` the usage says: `./bin/myapplication [OPTIONS] NAME`. `NAME` is an argument, so we don't write `./bin/myapplication --name Alice` but instead `./bin/myapplication Alice`.
