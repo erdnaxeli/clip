@@ -1,0 +1,1039 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.1">
+    
+    
+      
+        <title>First steps - Clip</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.9299cb39.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../css/custom.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#first-steps" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Clip" class="md-header__button md-logo" aria-label="Clip" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Clip
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              First steps
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/erdnaxeli/clip/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    erdnaxei/clip
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Clip" class="md-nav__button md-logo" aria-label="Clip" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Clip
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/erdnaxeli/clip/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    erdnaxei/clip
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Clip
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/" class="md-nav__link">
+        Features
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        User guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="User guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          User guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        Setup
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          First steps
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        First steps
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-a-type" class="md-nav__link">
+    Mapping a type
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parsing-the-user-input" class="md-nav__link">
+    Parsing the user input
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#catching-user-input-error" class="md-nav__link">
+    Catching user input error
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-help-case" class="md-nav__link">
+    The help case
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-the-user-input" class="md-nav__link">
+    Accessing the user input
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options-arguments-and-parameters" class="md-nav__link">
+    Options, arguments and parameters
+  </a>
+  
+    <nav class="md-nav" aria-label="Options, arguments and parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cli-parameters" class="md-nav__link">
+    CLI Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    Options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arguments" class="md-nav__link">
+    Arguments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3">
+        Options
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Options" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Options
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/optional/" class="md-nav__link">
+        Optional options
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/required/" class="md-nav__link">
+        Required options
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/nilable/" class="md-nav__link">
+        Nilable options
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/flags/" class="md-nav__link">
+        Flags
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/name/" class="md-nav__link">
+        Option name
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../options/types/" class="md-nav__link">
+        Option types
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4" type="checkbox" id="__nav_3_4" >
+      
+      <label class="md-nav__link" for="__nav_3_4">
+        Arguments
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Arguments" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          Arguments
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arguments/required/" class="md-nav__link">
+        Required arguments
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arguments/optional/" class="md-nav__link">
+        Optional arguments
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arguments/nilable/" class="md-nav__link">
+        Nilable arguments
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arguments/types/" class="md-nav__link">
+        Argument types
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arguments/multiple/" class="md-nav__link">
+        Multiple arguments
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../doc/" class="md-nav__link">
+        Documentation
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../commands/" class="md-nav__link">
+        Commands
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../help/" class="md-nav__link">
+        Help
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arrays/" class="md-nav__link">
+        Multiple values
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        Errors
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../non_cli_app/" class="md-nav__link">
+        Non CLI applications
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../alternatives/" class="md-nav__link">
+        Alternatives
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../help/" class="md-nav__link">
+        Get help — Help Clip
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        Contributing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../release-notes/" class="md-nav__link">
+        Release notes
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mapping-a-type" class="md-nav__link">
+    Mapping a type
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parsing-the-user-input" class="md-nav__link">
+    Parsing the user input
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#catching-user-input-error" class="md-nav__link">
+    Catching user input error
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-help-case" class="md-nav__link">
+    The help case
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-the-user-input" class="md-nav__link">
+    Accessing the user input
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#options-arguments-and-parameters" class="md-nav__link">
+    Options, arguments and parameters
+  </a>
+  
+    <nav class="md-nav" aria-label="Options, arguments and parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cli-parameters" class="md-nav__link">
+    CLI Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#options" class="md-nav__link">
+    Options
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#arguments" class="md-nav__link">
+    Arguments
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/erdnaxeli/clip/edit/main/docs/user guide/first_steps.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="first-steps">First steps<a class="headerlink" href="#first-steps" title="Permanent link">&para;</a></h1>
+<p>Let's do a hello world like app. We change <code>src/myapplication.cr</code> to:</p>
+<div class="highlight"><pre><span></span><code><span class="hll"><span class="k">require</span> <span class="s2">&quot;clip&quot;</span>
+</span>
+<span class="k">module</span> <span class="nn">Myapplication</span>
+  <span class="no">VERSION</span> <span class="o">=</span> <span class="s2">&quot;0.1.0&quot;</span>
+
+<span class="hll">  <span class="k">struct</span> <span class="nc">Command</span>
+</span><span class="hll">    <span class="k">include</span> <span class="n">Clip</span><span class="o">::</span><span class="n">Mapper</span>
+</span><span class="hll">
+</span><span class="hll">    <span class="bp">getter</span> <span class="n">name</span> <span class="p">:</span> <span class="n">String</span>
+</span><span class="hll">  <span class="k">end</span>
+</span>
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">run</span>
+<span class="hll">    <span class="k">begin</span>
+</span><span class="hll">      <span class="n">command</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">parse</span>
+</span><span class="hll">    <span class="k">rescue</span> <span class="n">ex</span> <span class="p">:</span> <span class="n">Clip</span><span class="o">::</span><span class="n">Error</span>
+</span><span class="hll">      <span class="nb">puts</span> <span class="n">ex</span>
+</span><span class="hll">      <span class="k">return</span>
+</span><span class="hll">    <span class="k">end</span>
+</span>
+<span class="hll">    <span class="k">if</span> <span class="n">command</span><span class="kp">.is_a?</span><span class="p">(</span><span class="n">Clip</span><span class="o">::</span><span class="n">Mapper</span><span class="o">::</span><span class="n">Help</span><span class="p">)</span>
+</span><span class="hll">      <span class="nb">puts</span> <span class="n">command</span><span class="o">.</span><span class="n">help</span>
+</span><span class="hll">    <span class="k">else</span>
+</span><span class="hll">      <span class="n">hello</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span class="hll">    <span class="k">end</span>
+</span>  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">hello</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">&quot;Hello </span><span class="si">#{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">Myapplication</span><span class="o">.</span><span class="n">run</span>
+</code></pre></div>
+<p>We can build and run the app, it works as expected:
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>shards build
+<span class="go">Dependencies are satisfied</span>
+<span class="go">Building: myapplication</span>
+<span class="gp">$ </span>./bin/myapplication --help
+<span class="go">Usage: ./bin/myapplication [OPTIONS] NAME</span>
+
+<span class="go">Arguments:</span>
+<span class="go">  NAME  [required]</span>
+
+<span class="go">Options:</span>
+<span class="go">  --help  Show this message and exit.</span>
+<span class="gp">$ </span>./bin/myapplication Alice
+<span class="go">Hello Alice</span>
+<span class="gp">$ </span>./bin/myapplication
+<span class="go">Error:</span>
+<span class="go">  argument is required: NAME</span>
+</code></pre></div></p>
+<p>We will now look at every block of code.</p>
+<h2 id="mapping-a-type">Mapping a type<a class="headerlink" href="#mapping-a-type" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">struct</span> <span class="nc">Command</span>
+<span class="hll">  <span class="k">include</span> <span class="n">Clip</span><span class="o">::</span><span class="n">Mapper</span>
+</span>
+  <span class="bp">getter</span> <span class="n">name</span> <span class="p">:</span> <span class="n">String</span>
+<span class="k">end</span>
+</code></pre></div>
+<p><strong>Clip</strong> works by including <code>Clip::Mapper</code> inside a user defined type, a class or a struct.
+When the module is included, a macro is executed and generates a constructor, the method <code>#parse</code> we used, and the help message.
+It does that by analysing the type's attributes to find options and arguments.
+We say it <em>maps</em> the type definition to the expected CLI parameters, hence the name "Mapper".</p>
+<p>The advantage is that we have a classic type definition, which guarantees us type validation at compilation time.</p>
+<p>Here <strong>Clip</strong> detected that we need one argument named <code>NAME</code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A class is allocated on the heap and passed by reference while a struct is allocated on the stack and passed by value.
+Hence structs are better suited for read only object.</p>
+<p>In this tutorial we will only use structs as we will never need to edit the
+object, but you can use classes as well.</p>
+</div>
+<h2 id="parsing-the-user-input">Parsing the user input<a class="headerlink" href="#parsing-the-user-input" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">begin</span>
+<span class="hll">  <span class="n">command</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">parse</span>
+</span><span class="k">rescue</span> <span class="n">ex</span> <span class="p">:</span> <span class="n">Clip</span><span class="o">::</span><span class="n">Error</span>
+  <span class="nb">puts</span> <span class="n">ex</span>
+  <span class="k">return</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>As said before, the macro creates a <code>#parse</code> method.
+It accepts an array of strings, and defaults to <code>ARGV</code>.</p>
+<p>This method acts as a constructor.
+It tries to parse the input, and on success it returns a new object.</p>
+<p>But there are two other cases:</p>
+<ul>
+<li>on user input failure, it raises an error</li>
+<li>if the user uses the special flag <code>--help</code>, it returns a special <code>Help</code> object</li>
+</ul>
+<h2 id="catching-user-input-error">Catching user input error<a class="headerlink" href="#catching-user-input-error" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">begin</span>
+  <span class="n">command</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">parse</span>
+<span class="hll"><span class="k">rescue</span> <span class="n">ex</span> <span class="p">:</span> <span class="n">Clip</span><span class="o">::</span><span class="n">Error</span>
+</span><span class="hll">  <span class="nb">puts</span> <span class="n">ex</span>
+</span>  <span class="k">return</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>If the user makes a mistake, by example if he uses an option not defined or does not set a required argument, the <code>#parse</code> method raises an exception.</p>
+<p>The exceptions raised by <code>#parse</code> have two properties:</p>
+<ul>
+<li>they always inherits from <code>Clip::Error</code></li>
+<li>their message is a preformatted error message</li>
+</ul>
+<p>This means that you can just rescue <code>Clip::Error</code> and puts the rescued exception to show the user a nice error message, as we just did.
+We will see later in this tutorial exactly what exceptions can be raised and how you can use them to format your own error messages.</p>
+<h2 id="the-help-case">The help case<a class="headerlink" href="#the-help-case" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="hll"><span class="k">if</span> <span class="n">command</span><span class="kp">.is_a?</span><span class="p">(</span><span class="n">Clip</span><span class="o">::</span><span class="n">Mapper</span><span class="o">::</span><span class="n">Help</span><span class="p">)</span>
+</span><span class="hll">  <span class="nb">puts</span> <span class="n">command</span><span class="o">.</span><span class="n">help</span>
+</span><span class="k">else</span>
+  <span class="n">hello</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>The help option is a special case that needs a special treatment.
+When the user set <code>--help</code>, he does not expect to get an error because <code>NAME</code> is required and was not provided.
+But <code>NAME</code> <em>is</em> indeed required, and we cannot return a <code>Command</code> instance as the Crystal compiler will complain that <code>@name</code> was not initialized (and we don't want to initialize it with a random or arbitrary value).</p>
+<p>The choice made by <strong>Clip</strong> is to return a instance of the special type <code>Command::Help</code>.
+This type was generated when including the <code>Clip::Mapper</code> module and has two properties:</p>
+<ol>
+<li>it inherits from <code>Clip::Mapper::Help</code></li>
+<li>it provide a method <code>#help</code> that returns the generated help message</li>
+</ol>
+<p>That why we do this first check using <code>#is_a?</code>: to print the help if requested by the user.</p>
+<h2 id="accessing-the-user-input">Accessing the user input<a class="headerlink" href="#accessing-the-user-input" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="n">command</span><span class="kp">.is_a?</span><span class="p">(</span><span class="n">Clip</span><span class="o">::</span><span class="n">Mapper</span><span class="o">::</span><span class="n">Help</span><span class="p">)</span>
+  <span class="nb">puts</span> <span class="n">command</span><span class="o">.</span><span class="n">help</span>
+<span class="k">else</span>
+<span class="hll">  <span class="n">hello</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span class="k">end</span>
+</code></pre></div>
+<p>Finally we use the user input wich was filled into the object attributes.
+As we are in the <code>else</code> clause of <code>if command.is_a?(Clip::Mapper::Help)</code> the compiler knows that our object is an instance of <code>Command</code>, and we can use its attribute <code>name</code>.</p>
+<h2 id="options-arguments-and-parameters">Options, arguments and parameters<a class="headerlink" href="#options-arguments-and-parameters" title="Permanent link">&para;</a></h2>
+<p>So far we used those tree words.
+We said that <code>NAME</code> is an argument, that <code>--help</code> is an option, and we mentioned <em>CLI parameters</em>. But what are they?</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All that follows is just conventions.
+They are more often than not respected, but some command may have different conventions, like <code>tar</code> which accepts options without hypens.</p>
+</div>
+<h3 id="cli-parameters">CLI Parameters<a class="headerlink" href="#cli-parameters" title="Permanent link">&para;</a></h3>
+<p>A <em>CLI parameter</em> or just <em>parameter</em> is anything given after the executable's name when executing a command. So in the command <code>ls -lh /tmp</code>, the parameters are <code>-lh</code> and <code>/tmp</code>.</p>
+<h3 id="options">Options<a class="headerlink" href="#options" title="Permanent link">&para;</a></h3>
+<p>An <em>option</em> is a specific type of parameter that must be named.
+It can have a value or not, it can be long or short, and if short it can be <em>concatenated</em>.</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>somecommand --name<span class="o">=</span>Alice -lg --file somefile
+</code></pre></div>
+<p>In this fictitious command there are 4 options:</p>
+<ul>
+<li><code>--name</code>, with a value <code>Alice</code></li>
+<li><code>-l</code>, without value</li>
+<li><code>-g</code>, without value</li>
+<li><code>--file</code>, with a value <code>somefile</code></li>
+</ul>
+<h3 id="arguments">Arguments<a class="headerlink" href="#arguments" title="Permanent link">&para;</a></h3>
+<p>An <em>argument</em> is a specific type of parameter that have a value but is not be named.</p>
+<p>In our command <code>myapplication</code> the usage says: <code>./bin/myapplication [OPTIONS] NAME</code>. <code>NAME</code> is an argument, so we don't write <code>./bin/myapplication --name Alice</code> but instead <code>./bin/myapplication Alice</code>.</p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../setup/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Setup
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../options/optional/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Optional options
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.7353b375.min.js"></script>
+      
+    
+  </body>
+</html>
