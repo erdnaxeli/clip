@@ -8,4 +8,8 @@ module Clip::Parse
       end
     {% end %}
   end
+
+  def parse(command : String)
+    parse(Process.parse_arguments(command))
+  end
 end
