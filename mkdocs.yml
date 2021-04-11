@@ -12,6 +12,8 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
   - admonition
+  - abbr
+  - pymdownx.snippets
   - toc:
       permalink: true
 
@@ -37,3 +39,5 @@ nav:
     - Commands: user guide/commands.md
     - Help: user guide/help.md
     - Multiple values: user guide/arrays.md
+    - Errors: user guide/errors.md
+    - Non CLI applications: user guide/non_cli_app.md
