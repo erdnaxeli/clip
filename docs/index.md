@@ -9,12 +9,12 @@
 ---
 
 Clip is a library for building CLI or CLI-like [Crystal](https://crystal-lang.org) applications.
-By CLI-like applications I mean every app that interacts with the user in a CLI style, like irc bots.
+By CLI-like applications I mean every application that interacts with the user in a CLI style, like IRC bots.
 
 The major features of Clip are:
 
-* **Easy to write**: All you need to write is a type. No new DSL, you get completion in your editor, and you have type safety.
-* **Easy to use**: Make beautiful CLI with standard behaviors, error messages and an automatic help.
+* **Easy to write**: All you need to write is a type. No new DSL to learn, and compilation time type validation.
+* **Easy to use**: Make beautiful applications with standard behaviors and automatic error and help messages.
 * **You are in control**: No code automatically executed for you, no messages printed to stdout. You do what you want, when you want.
 
 ## Requirements

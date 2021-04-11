@@ -19,6 +19,7 @@ markdown_extensions:
 
 nav:
   - Clip: index.md
+  - Features: features.md
   - User guide:
     - Setup: user guide/setup.md
     - First steps: user guide/first_steps.md
@@ -41,3 +42,10 @@ nav:
     - Multiple values: user guide/arrays.md
     - Errors: user guide/errors.md
     - Non CLI applications: user guide/non_cli_app.md
+  - Alternatives, inspirations and comparisons: alternatives.md
+  - Get help: help.md
+  - Contributing: contributing.md
+  - Release notes: release-notes.md
+
+extra_css:
+  - css/custom.css

@@ -111,7 +111,7 @@ module Mycommand
       print "> "
       if input = gets
         begin
-          command = Command.parse(Process.parse_arguments(input))
+          command = Command.parse(input)
         rescue ex : Clip::Error
           puts ex
           next
@@ -152,6 +152,10 @@ end
 
 Mycommand.run
 ```
+
+!!! Tip
+    We could parse the `input` string using [`Process.parse_arguments`](https://crystal-lang.org/api/1.0.0/Process.html#parse_arguments(line:String):Array(String)-class-method), but the `#parse` method provides a shortcut and accepts a string.
+    Internally it uses the exact same method from the `Process` class.
 
 Now we have options and arguments support, beautiful help messages, and error handling!
 
